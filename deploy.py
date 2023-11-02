@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import utils
 
+
 # Path to ssh key for repos
 git_ssh_key = "files/setup/git_ssh_key"
 
@@ -15,8 +16,8 @@ packages = [
     "htop",
     "vim",
     "git",
-    "maven",
-    "python2",
+#    "maven",
+#    "python2",
     "protobuf-compiler",
     "libunwind-dev",
     "libevent-dev",
@@ -26,10 +27,11 @@ packages = [
 ]
 
 # Workloads to generate
-workloads = ["load", "a"]
+#workloads = ["load", "a"]
 
 username = utils.get_username()
 home_directory = f"/users/{username}"
+print(f"home_directory: {home_directory}")
 
 distribution_name = host.get_fact(LinuxDistribution)["name"]
 if distribution_name != "Ubuntu":

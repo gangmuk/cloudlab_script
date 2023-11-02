@@ -21,7 +21,7 @@ def get_username():
         else:
             user = users[username]
     except:
-        username = "makneee"
+        username = "gangmuk"
         user = server.user(username, present=True, shell="/bin/bash", ensure_home=True, sudo=True)
     return username
 
