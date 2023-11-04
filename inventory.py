@@ -17,3 +17,7 @@ print(f"ssh_endpoints: {ssh_endpoints}")
 rac_servers = ssh_endpoints
 
 print(f"rac_servers: {rac_servers}")
+
+with open("servers.txt", "w") as f:
+    for server in ssh_endpoints:
+        f.write(server+' ')
