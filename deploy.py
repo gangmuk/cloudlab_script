@@ -8,7 +8,7 @@ import utils
 
 
 # Path to ssh key for repos
-git_ssh_key = "files/setup/git_ssh_key"
+#git_ssh_key = "files/setup/git_ssh_key"
 
 # Packages to install
 packages = [
@@ -50,10 +50,10 @@ apt.packages(
 )
 
 # Setup ssh key
-files.put(
-    git_ssh_key,
-    f"{home_directory}/.ssh/id_rsa",
-    mode="0600",
-    create_remote_dir=True,
-    user=username,
-)
+#files.put(
+#    git_ssh_key,
+#    f"{home_directory}/.ssh/id_rsa",
+#    mode="0600",
+#    create_remote_dir=True,
+#    user=username,
+#)
