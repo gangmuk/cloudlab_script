@@ -2,22 +2,22 @@
 
 
 1. Create a cluster in cloudlab (start experiment)
-2. ```git clone [this repo]``` in YOUR LOCAL MACHINE (e.g., MacBook).
-3. run ```cloudlab_script/ssh_copy.sh``` in **YOUR LOCAL MACHINE (e.g., MacBook)**. It will ask yes/no for authentication and ask Enter/Enter/Enter for ssh-keygen.
-4. Now you should be able to ssh node1 at node 0
-5. ```mkdir projects```; ```cd projects```; ```git clone [this repo]``` in **YOUR LOCAL MACHINE (e.g., MacBook)**.
-6. ```sudo apt-get upgrade -y```
-7. ```sudo apt-get update```
-8. ```python get-pip.py```
-9. ```sudo apt-get install python3-pip -y```
-10. ```pip install -r requirements.txt``` (it requires logout and login)
-11. Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file in **cloud lab node 0**
-12. ```pyinfra inventory.py deploy.py```
+2. ssh to node 0 in cloud lab cluster.
+3. run ```ssh-keygen``` command to generate key in node 1.
+4. vi ~/.ssh/id_rsa.pub, and copy the pub key and add it to your github account (SSH and GPG Key in setting).
+5. ```git clone [this repo]``` in YOUR LOCAL MACHINE (e.g., MacBook).
+6. run ```cloudlab_script/ssh_copy.sh``` in **YOUR LOCAL MACHINE (e.g., MacBook)**. It will ask yes/no for authentication and ask Enter/Enter/Enter for ssh-keygen.
+7. Now you should be able to ssh node1 at node 0
+8. ```mkdir projects```; ```cd projects```; ```git clone [this repo]``` in **YOUR LOCAL MACHINE (e.g., MacBook)**.
+9. ```sudo apt-get upgrade -y```
+10. ```sudo apt-get update```
+11. ```python get-pip.py```
+12. ```sudo apt-get install python3-pip -y```
+13. ```pip install -r requirements.txt``` (it requires logout and login)
+14. Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file in **cloud lab node 0**
+15. ```pyinfra inventory.py deploy.py```
 
-#### ssh-keygen
-4. ssh to node 1 in cloud lab cluster.
-5. run ```ssh-keygen``` command to generate key in node 1.
-6. vi ~/.ssh/id_rsa.pub, and copy the pub key and add it to your github account (SSH and GPG Key in setting).
+
 
 ## Common error
 - ValueError blah blah blah in gevent version error.
