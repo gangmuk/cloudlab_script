@@ -5,10 +5,10 @@
 2. ssh to node 0 in cloud lab cluster.
 3. run ```ssh-keygen``` command to generate key in node 1.
 4. vi ~/.ssh/id_rsa.pub, and copy the pub key and add it to your github account (SSH and GPG Key in setting).
-5. ```git clone [this repo]``` in YOUR LOCAL MACHINE (e.g., MacBook).
+5. ```git clone [this repo]``` in **YOUR LOCAL MACHINE (e.g., MacBook)**.
 6. run ```cloudlab_script/ssh_copy.sh``` in **YOUR LOCAL MACHINE (e.g., MacBook)**. It will ask yes/no for authentication and ask Enter/Enter/Enter for ssh-keygen.
 7. Now you should be able to ssh node1 at node 0
-8. ```mkdir projects```; ```cd projects```; ```git clone [this repo]``` in **YOUR LOCAL MACHINE (e.g., MacBook)**.
+8. ```mkdir projects```; ```cd projects```; ```git clone [this repo]``` in **node 0 in cloudlab**.
 9. ```sudo apt-get upgrade -y```
 10. ```sudo apt-get update```
 11. ```python get-pip.py```
