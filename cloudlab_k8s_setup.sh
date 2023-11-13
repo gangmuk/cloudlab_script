@@ -9,10 +9,18 @@
 #Source: https://www.linuxtechi.com/install-kubernetes-on-ubuntu-22-04/
 
 #########################
-alias dividerInstruction="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -;"
-alias dividerAttention="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' '*';"
-alias dividerAction="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' +;"
-alias dividerEnd="printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;"
+dividerInstruction () {
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -;
+}
+dividerAttention () {
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' '*';
+}
+dividerAction () {
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' +;
+}
+dividerEnd () {
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
+}
 ###########################
 
 echo "Assumes you have acquired a cluster of atleast 2 machines on cloudlab"
@@ -27,10 +35,6 @@ read -p "Press Enter once done:"
 dividerAction
 echo "In cloudlab, nodes reserved as a cluster are named node0, node1, node2 etc. By default we will define 'node0' as the control-plane node or 'k8smaster'. All other node<i> will be named k8sworker<i> in /etc/hosts"
 echo -e "\nNOTE: If you want to manually change the etc/hosts different from this convention, skip next step"
-
-######
-exit
-######
 
 read -p "Do you want script to automatically modify the /etc/hosts ? Enter 'y', if yes: " inp
 
@@ -77,6 +81,10 @@ else
 fi
 
 dividerInstruction
+
+####
+exit
+####
 
 ## Append to hosts_detail.txt
 cat hosts_detail.txt | sudo tee -a /etc/hosts
