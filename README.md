@@ -1,16 +1,22 @@
 # cloudlab_script
 
-1. You need to copy manifest from cloudlab gui and paste to the **config.xml** file in the local machine. You should run pyinfra script in the same path where this config.xml is located. config.xml is needed to get ip_adress of all cloudlab nodes. However, it requires you to copy only one manifest of one server (it does not matter which node it is) not all manifest from all server.
 
-2. Install required python packages (run on your local machine. e.g., mac)
-    ```bash
-    pip install requirements.txt
-    ```
+1. Create a cluster in cloudlab (start experiment)
+2. git clone [this repo] in YOUR LOCAL MACHINE (e.g., MacBook).
+3. run cloudlab_script/ssh_copy.sh in YOUR LOCAL MACHINE (e.g., MacBook). It will ask yes/no for authentication and ask Enter/Enter/Enter for ssh-keygen.
+4. ssh to node 1 in cloud lab cluster.
+5. run ```ssh-keygen``` command to generate key in node 1.
+6. vi ~/.ssh/id_rsa.pub, and copy the pub key and add it to your github account (SSH and GPG Key in setting).
+7. mkdir projects; cd projects; git clone [this repo]
+8. git pull this repo (cloudlab_script) in node 1.
+9. sudo apt-get upgrade -y
+10. sudo apt-get update
+11. python get-pip.py
+12. sudo apt-get install python3-pip -y
+13. pip install -r requirements.txt (it requires logout and login)
+14. Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file in the node 1 in cloud lab cluster
+15. pyinfra inventory.py deploy.py
 
-3. Run pyinfra for inventory.py and for deploy.py (run on your local machine)
-    ```bash
-    pyinfra inventory.py deploy.py
-    ```
 
 ## Common error
 - ValueError blah blah blah in gevent version error.
@@ -31,6 +37,5 @@
 --> pyinfra error: No hosts remaining!
 ```
 
-solution: I couldn't find it yet...
-It is related to **Host * StrictHostKeyChecking No** in ~/.ssh/config.
-However, it is not working even with that config.  
+Solution: uninstall greenlet and gevent and pyinfra and reinstall... Don't specify the versions for greenlet and gevent package.
+
