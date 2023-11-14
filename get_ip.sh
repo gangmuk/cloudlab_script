@@ -29,3 +29,7 @@ for host in "${lines[@]}"; do
 	fi
 
 done
+
+for host in "${lines[@]}"; do
+	scp hosts_detail.txt ${host}:/users/gangmuk/projects/cloudlab_script
+done
