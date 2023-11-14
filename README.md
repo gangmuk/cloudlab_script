@@ -1,22 +1,28 @@
 # cloudlab_script
 
+local_machine: **YOUR LOCAL MACHINE (e.g., MacBook)**. 
+client:  **node 0 in cloudlab**.
 
 1. Create a cluster in cloudlab (start experiment)
-2. ssh to node 0 in cloud lab cluster.
-3. run ```ssh-keygen``` command to generate key in node 1.
-4. vi ~/.ssh/id_rsa.pub, and copy the pub key and add it to your github account (SSH and GPG Key in setting).
-5. ```git clone [this repo]``` in **YOUR LOCAL MACHINE (e.g., MacBook)**.
-6. run ```cloudlab_script/ssh_copy.sh``` in **YOUR LOCAL MACHINE (e.g., MacBook)**. It will ask yes/no for authentication and ask Enter/Enter/Enter for ssh-keygen.
-7. Now you should be able to ssh node1 at node 0
-8. ```mkdir projects```; ```cd projects```; ```git clone [this repo]``` in **node 0 in cloudlab**.
-9. ```sudo apt-get upgrade -y```
-10. ```sudo apt-get update```
-11. ```python get-pip.py```
-12. ```sudo apt-get install python3-pip -y```
-13. ```pip install -r requirements.txt``` (it requires logout and login)
-14. Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file in **cloud lab node 0**
-15. ```pyinfra inventory.py deploy.py```
+2. [local_machine] Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file in **cloud lab node 0**
+3. [local_machine] ./ssh_copy.sh
+4. [local_machine] ./mkdir_gitclone.sh
+5. [local_machine] ssh to node 0 in cloud lab cluster.
+6. [clinet] ```pip install -r requirements.txt``` (it requires logout and login)
+7. [clinet] ```pyinfra inventory.py deploy.py```
+8. READY TO RUN ```cloudlab_k8s_setup.sh``` (It is another separate job...)
 
+---
+5. run ```ssh-keygen``` command to generate key in node 1.
+6. vi ~/.ssh/id_rsa.pub, and copy the pub key and add it to your github account (SSH and GPG Key in setting).
+7. ```git clone [this repo]``` in **YOUR LOCAL MACHINE (e.g., MacBook)**.
+8. run ```cloudlab_script/ssh_copy.sh```. It will ask yes/no for authentication and ask Enter/Enter/Enter for ssh-keygen.
+9. Now you should be able to ssh node1 at node 0
+10. ```mkdir projects```; ```cd projects```; ```git clone [this repo]``` in **node 0 in cloudlab**.
+11. ```sudo apt-get upgrade -y```
+12. ```sudo apt-get update```
+13. ```python get-pip.py```
+14. ```sudo apt-get install python3-pip -y```
 
 
 ## Common error
