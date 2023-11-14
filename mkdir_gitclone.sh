@@ -13,9 +13,9 @@ for line in "${lines[@]}"; do
     echo "$line"
 done
 
-git pull
-git archive --format=tar -o my_repo.tar -v HEAD
-#tar cvf T.tar *
+#git pull
+#git archive --format=tar -o my_repo.tar -v HEAD
+tar cvf my_repo.tar *
 
 echo "rm existing projects dir"
 pssh -i -h ${ip_file} "rm -rf /users/${user_name}/projects"
@@ -34,7 +34,7 @@ pssh -i -h servers.txt "tar xvf /users/${user_name}/projects/cloudlab_script/my_
 echo "rm my_repo.tar on each node"
 pssh -i -h servers.txt "rm /users/${user_name}/projects/cloudlab_script/my_repo.tar"
 
-echo "init"
-pssh -i -h ${ip_file} "bash ${project_dir}/init.sh"
+#echo "init"
+#pssh -i -h ${ip_file} "bash ${project_dir}/init.sh"
 
 rm my_repo.tar
