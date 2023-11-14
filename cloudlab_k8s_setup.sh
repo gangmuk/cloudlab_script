@@ -82,9 +82,6 @@ fi
 
 dividerInstruction
 
-####
-exit
-####
 
 ## Append to hosts_detail.txt
 cat hosts_detail.txt | sudo tee -a /etc/hosts

@@ -1,0 +1,46 @@
+0. RUN and wait:
+  sudo kubeadm init --control-plane-endpoint=node0.gangmuk-178336.istio-pg0.clemson.cloudlab.us --pod-network-cidr=10.244.0.0/16
+
+  1. Check that it says: the control plane initialization was successful
+
+  2. Execute the instructions given at the end of command in step (0) to setup .kube/config
+
+  3. Note the command to run on worker nodes to connect them to the network (Common errors: You may need to add sudo before the command). Take care to copy the command for joining new worker nodes and not new control nodes
+
+  4. Run the following command to deploy the network:
+
+   sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+   5. Note that all kube-system nodes look fine: kubectl get pods -n kube-system
+
+   6. As you add more workers, check they are all ready (note they will be ready only after network plugin is deployed): kubectl get nodes
+
+
+########################################################################################
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of control-plane nodes by copying certificate authorities
+and service account keys on each node and then running the following as root:
+
+  kubeadm join node0.gangmuk-178336.istio-pg0.clemson.cloudlab.us:6443 --token ks2422.47fxndd8osiawzmw \
+	--discovery-token-ca-cert-hash sha256:179157460cb5bb373750a7f6c59f2ce579acf52885f191eb69c115bcc40778c2 \
+	--control-plane
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join node0.gangmuk-178336.istio-pg0.clemson.cloudlab.us:6443 --token ks2422.47fxndd8osiawzmw \
+	--discovery-token-ca-cert-hash sha256:179157460cb5bb373750a7f6c59f2ce579acf52885f191eb69c115bcc40778c2
