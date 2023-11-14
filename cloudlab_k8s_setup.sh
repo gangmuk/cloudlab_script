@@ -203,15 +203,16 @@ then
     dividerAttention
     echo -e "\n Please do the following:"
     
-    if [ $network_type = 'c' ]
+    if [ $network_type == 'c' ]
     then
         ## Calico
-        echo -e "\n0. RUN and wait: \n  sudo kubeadm init --control-plane-endpoint=$HOSTNAME"
+        echo -e "RUNNING and wait: \n  sudo kubeadm init --control-plane-endpoint=$HOSTNAME"
+        sudo kubeadm init --control-plane-endpoint=$HOSTNAME
         
     else
         ## Flannel
-        echo -e "\n0. RUN and wait: \n  sudo kubeadm init --control-plane-endpoint=$HOSTNAME --pod-network-cidr=10.244.0.0/16 "
-        
+        echo -e "RUNNING and wait: \n  sudo kubeadm init --control-plane-endpoint=$HOSTNAME --pod-network-cidr=10.244.0.0/16 "
+        sudo kubeadm init --control-plane-endpoint=$HOSTNAME --pod-network-cidr=10.244.0.0/16
     fi
 
     
@@ -219,7 +220,7 @@ then
     echo -e "\n2. Execute the instructions given at the end of command in step (0) to setup .kube/config"
     echo -e "\n3. Note the command to run on worker nodes to connect them to the network (Common errors: You may need to add sudo before the command). Take care to copy the command for joining new worker nodes and not new control nodes"
     echo -e "\n4. Run the following command to deploy the network:"
-    if [ $network_type = 'c' ]
+    if [ $network_type == 'c' ]
     then
         ## Calico
         echo -e  "\n kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml"

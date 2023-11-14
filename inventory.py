@@ -22,7 +22,3 @@ rac_servers = ssh_endpoints
 with open("servers.txt", "w") as f:
     for server in ssh_endpoints:
         f.write(user_name+"@"+server+'\n')
-        
-#with open("hosts_detail.txt", "w") as f:
-#    for server in ssh_endpoints:
-#        f.write("ip" + " " + "hostname" + " " + user_name+"@"+server+'\n')
