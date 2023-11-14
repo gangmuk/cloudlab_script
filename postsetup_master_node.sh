@@ -1,4 +1,6 @@
-## This should run on the master node not on worker node
+#######################################################
+## Run it ONLY on the MASTER node NOT on worker node ##
+#######################################################
 
 IFS='.'
 for element in $HOSTNAME; do
@@ -32,20 +34,22 @@ cert_hash=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt \
     | openssl rsa -pubin -outform der 2>/dev/null \
     | openssl dgst -sha256 -hex \
     | sed 's/^.* //')
-control_plane_hostname="node0.gangmuk-178410.istio-pg0.cloudlab.umass.edu:6443"
-echo control_plane_hostname: $control_plane_hostname
+echo control_plane_hostname: $HOSTNAME
 echo token: $token
 echo cert_hash: $cert_hash
+filename=join_worker_node.sh
+echo "kubeadm join ${HOSTNAME} --token ${token} --discovery-token-ca-cert-hash ${cert_hash}" > ${filename} ## worker node
+#echo "kubeadm join ${HOSTNAME} --token ${token} --discovery-token-ca-cert-hash ${cert_hash} --control-plane" > ${filename} ## adding more control-plane
+chmod +x ${filename}
 
-echo "kubeadm join ${control_plane_hostname} --token ${token} --discovery-token-ca-cert-hash ${cert_hash} --control-plane" > join_worker_node.sh
-chmod +x join_worker_node.sh
-
-python inventory.py
+#python inventory.py
 ip_file=servers.txt
+kubeconfig_file="~/.kube/config"
 while IFS= read -r line; do
     lines+=("$line")
     done < ${ip_file}
 for line in "${lines[@]}"; do
-    echo "scp join_worker_node.sh to $line"
-	scp join_worker_node.sh ${line}:/users/gangmuk/projects/cloudlab_script
+    echo "scp ${filename} to $line"
+	scp ${filename} ${line}:/users/gangmuk/projects/cloudlab_script
+    scp ${kubeconfig_file}  ${line}:${kubeconfig_file}
 done
