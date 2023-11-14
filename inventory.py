@@ -10,14 +10,15 @@ with open(config_file, 'r') as f:
     soup = bs4.BeautifulSoup(xml, 'lxml')
 
 interfaces = list(soup.find_all('login'))
-ssh_endpoints = [interface["hostname"] for interface in interfaces]
+user_name = [interface["username"] for interface in interfaces][0]
+print("user_name:", user_name)
 
-print(f"ssh_endpoints: {ssh_endpoints}")
+ssh_endpoints = [interface["hostname"] for interface in interfaces]
+for ep in ssh_endpoints:
+    print(f"{ep}")
 
 rac_servers = ssh_endpoints
 
-print(f"rac_servers: {rac_servers}")
-
 with open("servers.txt", "w") as f:
     for server in ssh_endpoints:
-        f.write(server+' ')
+        f.write(user_name+"@"+server+'\n')
