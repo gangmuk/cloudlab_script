@@ -1,16 +1,17 @@
 # cloudlab_script
 
-local_machine: **YOUR LOCAL MACHINE (e.g., MacBook)**. 
-client:  **node 0 in cloudlab**.
+[local_machine]: **YOUR LOCAL MACHINE (e.g., MacBook)**. 
+[client]: **Node 0 in cloudlab**.
 
 1. Create a cluster in cloudlab (start experiment)
-2. [local_machine] Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file in **cloud lab node 0**
+2. [local_machine] Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file.
 3. [local_machine] ./ssh_copy.sh
 4. [local_machine] ./mkdir_gitclone.sh
-5. [local_machine] ssh to node 0 in cloud lab cluster.
-6. [clinet] ```pip install -r requirements.txt``` (it requires logout and login)
-7. [clinet] ```pyinfra inventory.py deploy.py```
-8. READY TO RUN ```cloudlab_k8s_setup.sh``` (It is another separate job...)
+5. [local_machine] ./get_ip.sh
+6. [local_machine] ssh to node 0 in cloud lab cluster.
+7. [clinet] ```pip install -r requirements.txt``` (it requires logout and login)
+8. [clinet] ```pyinfra inventory.py deploy.py```
+9. READY TO RUN ```cloudlab_k8s_setup.sh``` (It is another separate job...)
 
 ---
 5. run ```ssh-keygen``` command to generate key in node 1.
