@@ -1,5 +1,5 @@
 # 
-mv vimrc_file ~/.vimrc
+cp vimrc_file ~/.vimrc
 
 # install
 sudo apt-get upgrade -y
