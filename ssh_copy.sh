@@ -17,10 +17,14 @@ for line in "${lines[@]}"; do
     echo "$line"
 done
 
-echo "ssh-keygen"
-for line in "${lines[@]}"; do
-    ssh ${line} ssh-keygen
-done
+read -p "If you want, ssh-keygen in each cluster, Enter 'y', if yes: " inp
+if [ $inp = 'y' ]
+then
+    echo "ssh-keygen"
+    for line in "${lines[@]}"; do
+        ssh ${line} ssh-keygen
+    done
+fi
 
 echo "fetching public key into ${temp_local_file}"
 for line in "${lines[@]}"; do
