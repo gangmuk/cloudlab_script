@@ -313,7 +313,8 @@ then
 
 else
     echo "THIS IS WORKER NODE (nodename: $nodename)"
-    echo "You should run
+    echo "You should run kubeadm join command in worker node"
+    echo "Run ./get_join_command.sh in master node to print join command"
     echo -e "Note down the command from master node to join the k8s network and run"
 fi
 
