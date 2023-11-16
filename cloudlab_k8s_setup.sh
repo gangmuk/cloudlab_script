@@ -1,4 +1,5 @@
 #!/bin/bash
+MASTER_NODE=$1
 
 sleep_func () {
     echo "Next command will be executed in 5 seconds"
@@ -218,7 +219,7 @@ sleep_func
 #echo ""
 #read -p "If this node is the master, enter 'm'" inp
 #if [ $inp == 'm' ]
-if [ $nodename == "node0" ]
+if [ $nodename == $MASTER_NODE ]
 then
 	echo "THIS IS MASTER NODE (nodename: $nodename)"
 	echo "We will execute kubeadm init and apply network"
@@ -245,6 +246,20 @@ then
         echo -e "RUN and wait: \n  sudo kubeadm init --control-plane-endpoint=$HOSTNAME --pod-network-cidr=10.244.0.0/16 "
         sudo kubeadm init --control-plane-endpoint=$HOSTNAME --pod-network-cidr=10.244.0.0/16
     fi
+
+    echo "setup .kube/config"
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+    echo "apply network"
+    if [ $network_type == 'c' ]
+    then
+        kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml ## calico
+    else
+        sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml ## flannel
+    fi
+    ./master_node_post_setup.sh
     
     echo -e "\n1. Check that it says: the control plane initialization was successful"
     echo -e "\n2. Execute the instructions given at the end of command in step (0) to setup .kube/config"
