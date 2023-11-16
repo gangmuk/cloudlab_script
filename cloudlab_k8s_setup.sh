@@ -51,7 +51,7 @@ echo -e "\nNOTE: If you want to manually change the etc/hosts different from thi
 
 ## gangmuk
 #read -p "Do you want script to automatically modify the /etc/hosts ? Enter 'y', if yes: " inp
-#if [ $inp = 'y' ]
+#if [ $inp == 'y' ]
 #then
 #    echo "Hostname: $HOSTNAME"
 #    node_name=$(echo $HOSTNAME | cut -d'.' -f1 | tail -c2)
@@ -217,7 +217,7 @@ sleep_func
 ## gangmuk
 #echo ""
 #read -p "If this node is the master, enter 'm'" inp
-#if [ $inp = 'm' ]
+#if [ $inp == 'm' ]
 if [ $nodename == "node0" ]
 then
 	echo "THIS IS MASTER NODE (nodename: $nodename)"
