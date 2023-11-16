@@ -1,3 +1,5 @@
+read -p "Did you check the servers.txt file? Press Enter to continue: " inp
+
 ip_file=servers.txt
 while IFS= read -r line; do
     lines+=("$line")

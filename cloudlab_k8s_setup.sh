@@ -1,5 +1,17 @@
 #!/bin/bash
-MASTER_NODE=$1
+
+########################################################
+# author: Chirag C. Shetty (cshetty2@illinois.edu)
+# date: Sep 14, 2023 
+# modified by: Gangmuk Lim (gangmuk2@illinois.edu)
+# modified date: Nov 16, 2023
+########################################################
+
+# run as: . ./cloudlab_k8s_setup.sh
+# input the name of the master node (control-plane in k8s cluster)
+# does: the setup required to start a k8s cluster. At the end will give instructions to setup the network
+
+#Source: https://www.linuxtechi.com/install-kubernetes-on-ubuntu-22-04/
 
 sleep_func () {
     echo "Next command will be executed in 5 seconds"
@@ -9,14 +21,6 @@ sleep_func () {
         sleep 1
     done
 }
-
-# author: Chirag C. Shetty (cshetty2@illinois.edu)
-# date: Sep 14, 2023 
-
-# run as: . ./cloudlab_k8s_setup.sh
-# does: the setup required to start a k8s cluster. At the end will give instructions to setup the network
-
-#Source: https://www.linuxtechi.com/install-kubernetes-on-ubuntu-22-04/
 
 #########################
 dividerInstruction () {
@@ -32,6 +36,22 @@ dividerEnd () {
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
 }
 ###########################
+
+read -p "Is this MASTER NODE? [Y/N]: " IS_MASTER
+if [ $IS_MASTER != 'Y' ] && [ $IS_MASTER != 'N' ]
+then
+    echo "Invalid inputu for IS_MASTER: $IS_MASTER"
+    echo "The valid input is either Y or N"
+    exit
+fi
+
+if [ $IS_MASTER == 'Y' ]
+then
+    echo "** THIS IS MASTER NODE"
+else
+    echo "** THIS IS WORKER NODE"
+fi
+sleep_func
 
 echo "Assumes you have acquired a cluster of atleast 2 machines on cloudlab"
 sleep_func 5
@@ -219,7 +239,7 @@ sleep_func
 #echo ""
 #read -p "If this node is the master, enter 'm'" inp
 #if [ $inp == 'm' ]
-if [ $nodename == $MASTER_NODE ]
+if [ $IS_MASTER == 'Y' ]
 then
 	echo "THIS IS MASTER NODE (nodename: $nodename)"
 	echo "We will execute kubeadm init and apply network"
@@ -259,7 +279,22 @@ then
     else
         sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml ## flannel
     fi
-    ./master_node_post_setup.sh
+
+	mkdir -p $HOME/.kube
+	sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+	sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+    ## network apply
+    sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml ## flannel
+	#kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml ## calico
+
+	token=$(kubeadm token list | sed -n '2p' | awk '{print $1}')
+	cert_hash=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt \
+		| openssl rsa -pubin -outform der 2>/dev/null \
+		| openssl dgst -sha256 -hex \
+		| sed 's/^.* //')
+	echo "** COPY AND RUN THE FOLLOWING COMMAND LINE IN WORKER NODE**"
+	echo "sudo kubeadm join ${HOSTNAME}:6443 --token ${token} --discovery-token-ca-cert-hash sha256:${cert_hash}"
     
     echo -e "\n1. Check that it says: the control plane initialization was successful"
     echo -e "\n2. Execute the instructions given at the end of command in step (0) to setup .kube/config"
@@ -278,6 +313,7 @@ then
 
 else
     echo "THIS IS WORKER NODE (nodename: $nodename)"
+    echo "You should run
     echo -e "Note down the command from master node to join the k8s network and run"
 fi
 
