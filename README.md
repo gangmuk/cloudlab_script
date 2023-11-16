@@ -14,6 +14,85 @@
 9. READY TO RUN ```cloudlab_k8s_setup.sh``` (It is another separate job...)
 
 ---
+# istio multi-primary cluster on different network
+reference: https://istio.io/latest/docs/setup/install/multicluster/multi-primary_multi-network/
+
+	Set the default network for cluster1
+	Configure cluster1 as a primary
+	Install the east-west gateway in cluster1
+	Expose services in cluster1
+	Set the default network for cluster2
+	Configure cluster2 as a primary
+	Install the east-west gateway in cluster2
+	Expose services in cluster2
+	Enable Endpoint Discovery
+
+---
+# metallb
+Why do we need metallb?
+    metallb doc: https://metallb.universe.tf
+How to give external-ip to LoadBalancer service using metallb 
+    useful blog post: https://mvallim.github.io/kubernetes-under-the-hood/documentation/kube-metallb.html
+
+- To give external ip to load-balancer type service (istio ingressgateway or eastwest gateway in our case), so that we can access it from outside world.
+	EXTERNAL-IP is empty. We want to fill
+	```bash
+	$ k get svc -n istio-system
+	NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE
+	istio-ingressgateway   LoadBalancer   10.105.119.53   <pending>     15021:31750/TCP,80:30494/TCP,443:30676/TCP   11h
+	istiod                 ClusterIP      10.102.10.213   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        11h
+	```
+
+1. kubectl edit configmap -n kube-system kube-proxy
+2. change strictARP to true (the script below automates the process)
+    ```bash
+	kubectl get configmap kube-proxy -n kube-system -o yaml | \
+	sed -e "s/strictARP: false/strictARP: true/" | \
+	kubectl apply -f - -n kube-system
+	```
+3. install metallb
+	```bash
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
+	```
+4. Add metallb namespace
+    xxxxxxxxxxxxxxxxxxxx
+	namespace yaml file
+	```yaml
+	apiVersion: v1
+	kind: Namespace
+	metadata:
+	  name: metallb-system
+	  labels:
+		app: metallb
+	```
+    xxxxxxxxxxxxxxxxxxxx
+5. create configmap for metallb to assign a range of ip addresses that will be used by metallb
+    ```bash
+    kubectl apply -f https://raw.githubusercontent.com/mvallim/kubernetes-under-the-hood/master/metallb/metallb-config.yaml
+    ```
+	or
+	```bash
+	kubectl apply -f metallb_config.yaml
+	```
+	filename: metallb_config.yaml
+	```yaml
+	apiVersion: v1
+	kind: ConfigMap
+	metadata:
+		namespace: metallb-system
+		name: config
+	data:
+		config: |
+			address-pools:
+			- name: default
+			  protocol: layer2
+			  addresses:
+			  - 192.168.2.2-192.168.2.125
+	```
+    The last line (addresses) can be changed. These ip addresses will be given to LoadBalancer as external-ip.
+6. Deploy LoadBalancer service or Restart existing LoadBalancer (ingress gateway or eastwest gateway)
+
+---
 5. run ```ssh-keygen``` command to generate key in node 1.
 6. vi ~/.ssh/id_rsa.pub, and copy the pub key and add it to your github account (SSH and GPG Key in setting).
 7. ```git clone [this repo]``` in **YOUR LOCAL MACHINE (e.g., MacBook)**.
