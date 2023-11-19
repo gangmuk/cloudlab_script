@@ -251,10 +251,9 @@ then
     ################
     echo ""
     network_type='f'
-    read -p "By default we use flannel network plugin. If you want Calico instead, enter 'c'" network_type
-    
-    dividerAttention
-    echo -e "\n Please do the following:"
+    #read -p "By default we use flannel network plugin. If you want Calico instead, enter 'c'" network_type
+    #dividerAttention
+    #echo -e "\n Please do the following:"
     
     if [ $network_type == 'c' ]
     then
@@ -293,13 +292,15 @@ then
 		| openssl rsa -pubin -outform der 2>/dev/null \
 		| openssl dgst -sha256 -hex \
 		| sed 's/^.* //')
+    dividerAttention
 	echo "** COPY AND RUN THE FOLLOWING COMMAND LINE IN WORKER NODE**"
 	echo "sudo kubeadm join ${HOSTNAME}:6443 --token ${token} --discovery-token-ca-cert-hash sha256:${cert_hash}"
+    dividerAttention
     
-    echo -e "\n1. Check that it says: the control plane initialization was successful"
-    echo -e "\n2. Execute the instructions given at the end of command in step (0) to setup .kube/config"
-    echo -e "\n3. Note the command to run on worker nodes to connect them to the network (Common errors: You may need to add sudo before the command). Take care to copy the command for joining new worker nodes and not new control nodes"
-    echo -e "\n4. Run the following command to deploy the network:"
+#    echo -e "\n1. Check that it says: the control plane initialization was successful"
+#    #echo -e "\n2. Execute the instructions given at the end of command in step (0) to setup .kube/config"
+#    echo -e "\n3. Note the command to run on worker nodes to connect them to the network (Common errors: You may need to add sudo before the command). Take care to copy the command for joining new worker nodes and not new control nodes"
+#    echo -e "\n4. Run the following command to deploy the network:"
     if [ $network_type == 'c' ]
     then
         ## Calico
@@ -308,13 +309,13 @@ then
         ## Flannel
         echo -e "\n sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"
     fi
-    echo -e "\n5. Note that all kube-system nodes look fine: kubectl get pods -n kube-system"
-    echo -e "\n6. As you add more workers, check they are all ready (note they will be ready only after network plugin is deployed): kubectl get nodes"
+#    echo -e "\n5. Note that all kube-system nodes look fine: kubectl get pods -n kube-system"
+#    echo -e "\n6. As you add more workers, check they are all ready (note they will be ready only after network plugin is deployed): kubectl get nodes"
 
 else
     echo "THIS IS WORKER NODE (nodename: $nodename)"
     echo "You should run kubeadm join command in worker node"
-    echo "Run ./get_join_command.sh in master node to print join command"
+    #echo "Run ./get_join_command.sh in master node to print join command"
     echo -e "Note down the command from master node to join the k8s network and run"
 fi
 

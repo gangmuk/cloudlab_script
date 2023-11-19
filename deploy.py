@@ -29,9 +29,6 @@ packages = [
 # Workloads to generate
 #workloads = ["load", "a"]
 
-username = utils.get_username()
-home_directory = f"/users/{username}"
-print(f"home_directory: {home_directory}")
 
 distribution_name = host.get_fact(LinuxDistribution)["name"]
 if distribution_name != "Ubuntu":
@@ -48,6 +45,10 @@ apt.packages(
     _sudo=True
     # user=username,
 )
+
+#username = utils.get_username()
+#home_directory = f"/users/{username}"
+#print(f"home_directory: {home_directory}")
 
 # Setup ssh key
 #files.put(

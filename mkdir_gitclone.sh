@@ -2,7 +2,7 @@
 
 user_name=gangmuk
 ip_file=servers.txt
-project_dir=/users/${user_name}/projects/cloudlab_script
+project_dir="/users/${user_name}/projects/cloudlab_script"
 
 python inventory.py
 
@@ -15,26 +15,40 @@ done
 
 #git pull
 #git archive --format=tar -o my_repo.tar -v HEAD
-tar cvf my_repo.tar *
+#tar cvf my_repo.tar *
 
-echo "rm existing projects dir"
-pssh -i -h ${ip_file} "rm -rf /users/${user_name}/projects"
+#echo "rm existing projects dir"
+#pssh -i -h ${ip_file} "rm -rf /users/${user_name}/projects"
 
-echo "mkdir"
-pssh -i -h ${ip_file} "mkdir -p /users/${user_name}/projects/cloudlab_script"
+project_dir="/users/gangmuk/projects/cloudlab_script"
+if [ -d ${project_dir} ]
+then
+    echo "${project_dir} exists"
+    echo "exit..."
+    exit
+fi
 
-echo "scp"
-for line in "${lines[@]}"; do
-	scp ./my_repo.tar ${line}:/users/${user_name}/projects/cloudlab_script
-done
+if [ -d ${users/gangmuk/projects} ]
+    echo "projects dir exists"
+else
+    echo "mkdir users/gangmuk/projects"
+    pssh -i -h ${ip_file} "mkdir -p /users/${user_name}/projects"
+fi
 
-echo "tar"
-pssh -i -h servers.txt "tar xvf /users/${user_name}/projects/cloudlab_script/my_repo.tar -C /users/${user_name}/projects/cloudlab_script"
+echo "git clone"
+pssh -i -h ${ip_file} "git clone https://github.com/gangmuk/cloudlab_script.git /users/gangmuk/projects"
+
+#echo "scp"
+#for line in "${lines[@]}"; do
+#	scp ./my_repo.tar ${line}:/users/${user_name}/projects/cloudlab_script
+#done
+#echo "tar"
+#pssh -i -h ${ip_file} "tar xvf /users/${user_name}/projects/cloudlab_script/my_repo.tar -C /users/${user_name}/projects/cloudlab_script"
     
-echo "rm my_repo.tar on each node"
-pssh -i -h servers.txt "rm /users/${user_name}/projects/cloudlab_script/my_repo.tar"
+#echo "rm my_repo.tar on each node"
+#pssh -i -h servers.txt "rm /users/${user_name}/projects/cloudlab_script/my_repo.tar"
 
 #echo "init"
 #pssh -i -h ${ip_file} "bash ${project_dir}/init.sh"
 
-rm my_repo.tar
+#rm my_repo.tar
