@@ -61,55 +61,9 @@ How to give external-ip to LoadBalancer service using metallb
 	istiod                 ClusterIP      10.102.10.213   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        11h
 	```
 
-1. kubectl edit configmap -n kube-system kube-proxy
-2. change strictARP to true (the script below automates the process)
-    ```bash
-	kubectl get configmap kube-proxy -n kube-system -o yaml | \
-	sed -e "s/strictARP: false/strictARP: true/" | \
-	kubectl apply -f - -n kube-system
-	```
-3. install metallb
-	```bash
-	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
-	```
-4. Add metallb namespace
-    xxxxxxxxxxxxxxxxxxxx
-	namespace yaml file
-	```yaml
-	apiVersion: v1
-	kind: Namespace
-	metadata:
-	  name: metallb-system
-	  labels:
-		app: metallb
-	```
-    xxxxxxxxxxxxxxxxxxxx
-5. create configmap for metallb to assign a range of ip addresses that will be used by metallb
-    ```bash
-    kubectl apply -f https://raw.githubusercontent.com/mvallim/kubernetes-under-the-hood/master/metallb/metallb-config.yaml
-    ```
-	or
-	```bash
-	kubectl apply -f metallb_config.yaml
-	```
-	filename: metallb_config.yaml
-	```yaml
-	apiVersion: v1
-	kind: ConfigMap
-	metadata:
-		namespace: metallb-system
-		name: config
-	data:
-		config: |
-			address-pools:
-			- name: default
-			  protocol: layer2
-			  addresses:
-			  - 192.168.2.2-192.168.2.125
-	```
-    The last line (addresses) can be changed. These ip addresses will be given to LoadBalancer as external-ip.
-6. Deploy LoadBalancer service or Restart existing LoadBalancer (ingress gateway or eastwest gateway)
-7. 
+RUN cloudlab_script/metallb/metallb.sh
+It is not working still...
+
 ---
 
 ## Common error
