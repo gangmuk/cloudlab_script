@@ -4,7 +4,7 @@ user_name="gangmuk"
 ssh_path="/users/${user_name}/.ssh"
 auth_key_path="authorized_keys"
 temp_local_file="all_keys.txt"
-ip_file=servers.txt
+ip_file="servers.txt"
 
 python inventory.py
 
