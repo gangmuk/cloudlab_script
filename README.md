@@ -1,17 +1,35 @@
 # cloudlab_script
 
 [local_machine]: **YOUR LOCAL MACHINE (e.g., MacBook)**. 
-[client]: **Node 0 in cloudlab**.
+[client]: **Node<i> in cloudlab**.
 
 1. Create a cluster in cloudlab (start experiment)
 2. [local_machine] Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file.
-3. [local_machine] ./ssh_copy.sh
-4. [local_machine] ./mkdir_gitclone.sh
-5. [local_machine] ./get_ip.sh
-6. [local_machine] ssh to node 0 in cloud lab cluster.
-7. [clinet] ```pip install -r requirements.txt``` (it requires logout and login)
-8. [clinet] ```pyinfra inventory.py deploy.py```
-9. READY TO RUN ```cloudlab_k8s_setup.sh``` (It is another separate job...)
+3. [local_machine] ```./ssh_copy.sh```
+   - Run inventory.py (it reads config.xml file and writes serves.txt file)
+   - Generate ssh-key on each node in the cloud lab cluster.
+   - cat all cloud lab ssh-key and write it to all_keys.txt in the [local_machine].
+   - scp all_keys.txt from [local_machine] to all clients (cloud lab nodes)
+   - Append all_keys.txt in the clients to its authorized_keys
+5. [local_machine] ```./mkdir_gitclone.sh```
+   - Create projects directory in the clients
+   - git clone this repo(cloudlab_script) in /users/gangmuk/projects path
+7. [local_machine] ```./create_hosts_detail.sh```
+   - hosts_detail.txt which will be used by cloudlab_k8s_setup.sh
+   - You have to modify this file to specify the k8s nodes.
+   - Remove nodes in hosts_detail.txt which you don't want to include in k8s cluster.
+9. [local_machine] ssh node0 in cloud lab cluster.
+10. [clinet] ```pip install -r requirements.txt``` (it requires logout and login)
+    - This is for pyinfra basically
+12. [clinet] ```pyinfra inventory.py deploy.py```
+    - install some basic linux packages in all client nodes.
+14. READY TO RUN ```cloudlab_k8s_setup.sh``` (It is another separate job...)
+
+---
+## cloudlab_k8s_setup.sh
+1. [client] ./cloudlab_k8s_setup.sh
+   - Is this MASTER NODE? [Y/N]:
+2. If it is worker node, you are supposed to run ```sudo kubeadm join ...``` command to join the cluster. You can get the full command by running ```./get_join_command.sh in **master** node.
 
 ---
 # istio multi-primary cluster on different network
@@ -91,19 +109,8 @@ How to give external-ip to LoadBalancer service using metallb
 	```
     The last line (addresses) can be changed. These ip addresses will be given to LoadBalancer as external-ip.
 6. Deploy LoadBalancer service or Restart existing LoadBalancer (ingress gateway or eastwest gateway)
-
+7. 
 ---
-5. run ```ssh-keygen``` command to generate key in node 1.
-6. vi ~/.ssh/id_rsa.pub, and copy the pub key and add it to your github account (SSH and GPG Key in setting).
-7. ```git clone [this repo]``` in **YOUR LOCAL MACHINE (e.g., MacBook)**.
-8. run ```cloudlab_script/ssh_copy.sh```. It will ask yes/no for authentication and ask Enter/Enter/Enter for ssh-keygen.
-9. Now you should be able to ssh node1 at node 0
-10. ```mkdir projects```; ```cd projects```; ```git clone [this repo]``` in **node 0 in cloudlab**.
-11. ```sudo apt-get upgrade -y```
-12. ```sudo apt-get update```
-13. ```python get-pip.py```
-14. ```sudo apt-get install python3-pip -y```
-
 
 ## Common error
 - ValueError blah blah blah in gevent version error.
