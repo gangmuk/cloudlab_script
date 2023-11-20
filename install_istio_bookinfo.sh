@@ -80,16 +80,19 @@ else
     echo "WRONG CLUSTER_ID: $CLUSTER_ID"
 fi
 
-echo "Enable endpoint discovery manually... commands in the comment"
-
-## Execute it in cluster 1
-#istioctl create-remote-secret \
-#  --context="${CTX_CLUSTER2}" \
-#  --name=cluster2 | \
-#  kubectl apply -f - --context="${CTX_CLUSTER1}"
-
-## Execute it in cluster 2
-#istioctl create-remote-secret \
-#  --context="${CTX_CLUSTER1}" \
-#  --name=cluster1 | \
-#  kubectl apply -f - --context="${CTX_CLUSTER2}"
+echo "Enable endpoint discovery"
+if [ $CLUSTER_ID == '1' ]
+then
+    istioctl create-remote-secret \
+      --context="${CTX_CLUSTER1}" \
+      --name=cluster2 | \
+      kubectl apply -f - --context="${CTX_CLUSTER2}"
+elif  [ $CLUSTER_ID == '2' ]
+then
+    istioctl create-remote-secret \
+      --context="${CTX_CLUSTER2}" \
+      --name=cluster1 | \
+      kubectl apply -f - --context="${CTX_CLUSTER1}"
+else
+    echo "WRONG CLUSTER_ID: $CLUSTER_ID"
+fi
