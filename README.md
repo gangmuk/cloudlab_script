@@ -3,6 +3,8 @@
 [local_machine]: **YOUR LOCAL MACHINE (e.g., MacBook)**. 
 [client]: **Node<i> in cloudlab**.
 
+
+## cloudlab node set up
 1. Create a cluster in cloudlab (start experiment)
 2. [local_machine] Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file.
 3. [local_machine] ```./ssh_copy.sh```
@@ -27,12 +29,12 @@
 
 ---
 ## cloudlab_k8s_setup.sh
-1. [client] ./cloudlab_k8s_setup.sh
+1. [client] ```./cloudlab_k8s_setup.sh```
    - Is this MASTER NODE? [Y/N]:
 2. If it is worker node, you are supposed to run ```sudo kubeadm join ...``` command to join the cluster. You can get the full command by running ```./get_join_command.sh in **master** node.
 
 ---
-# istio multi-primary cluster on different network
+## istio multi-primary cluster on different network
 Run ```./cloudlab_script/install_istio_bookinfo.sh```
 reference: https://istio.io/latest/docs/setup/install/multicluster/multi-primary_multi-network/
 1. Set the default network for cluster1
@@ -46,7 +48,7 @@ reference: https://istio.io/latest/docs/setup/install/multicluster/multi-primary
 9. Enable Endpoint Discovery
 
 ---
-# metallb
+## metallb
 Why do we need metallb?
     metallb doc: https://metallb.universe.tf
 How to give external-ip to LoadBalancer service using metallb 
@@ -61,8 +63,9 @@ How to give external-ip to LoadBalancer service using metallb
 	istiod                 ClusterIP      10.102.10.213   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        11h
 	```
 
-RUN cloudlab_script/metallb/metallb.sh
-It is not working still...
+RUN ```cloudlab_script/metallb/metallb.sh```
+It is not able to access external-ip from outside...
+It works inside the network
 
 ---
 
