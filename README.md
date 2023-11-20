@@ -33,17 +33,17 @@
 
 ---
 # istio multi-primary cluster on different network
+Run ```./cloudlab_script/install_istio_bookinfo.sh```
 reference: https://istio.io/latest/docs/setup/install/multicluster/multi-primary_multi-network/
-
-	Set the default network for cluster1
-	Configure cluster1 as a primary
-	Install the east-west gateway in cluster1
-	Expose services in cluster1
-	Set the default network for cluster2
-	Configure cluster2 as a primary
-	Install the east-west gateway in cluster2
-	Expose services in cluster2
-	Enable Endpoint Discovery
+1. Set the default network for cluster1
+2. Configure cluster1 as a primary
+3. Install the east-west gateway in cluster1
+4. Expose services in cluster1
+5. Set the default network for cluster2
+6. Configure cluster2 as a primary
+7. Install the east-west gateway in cluster2
+8. Expose services in cluster2
+9. Enable Endpoint Discovery
 
 ---
 # metallb
