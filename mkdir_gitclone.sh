@@ -16,3 +16,5 @@ python inventory.py
 #fi
 
 pssh -i -h ${ip_file} "git clone https://github.com/gangmuk/cloudlab_script.git ${project_dir}"
+
+pscp -h servers.txt config.xml ${project_dir}

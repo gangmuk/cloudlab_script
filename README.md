@@ -7,7 +7,6 @@
 ## cloudlab node set up
 1. Create a cluster in cloudlab (start experiment)
 2. [local machine] Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file.
-    run scp_cloudlab_config_xml.sh to copy config.xml to the clients
 3. [local machine] ```./ssh_copy.sh```
    - Run inventory.py (it reads config.xml file and writes serves.txt file)
    - Generate ssh-key on each node in the cloud lab cluster.
@@ -22,7 +21,7 @@
    - You have to modify this file to specify the k8s nodes.
    - Remove nodes in hosts_detail.txt which you don't want to include in k8s cluster.
 9. [local machine] ssh node0 in cloud lab cluster.
-10. [client] ```pip install -r requirements.txt``` (it requires logout and login)
+10. [client] ```./install_python_pkg.sh``` and ```source ~/.bashrc```
     - install pip
     - run pip install -r requirements.txt
     - add path to .bashrc
