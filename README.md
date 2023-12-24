@@ -3,6 +3,21 @@
 [local machine]: YOUR LOCAL MACHINE (e.g., MacBook)
 [client]: Node<i> in cloudlab
 
+---
+### TLDR
+copy cloudlab cluster manifest to `config.xml` file
+`./ssh_copy.sh`
+`./mkdir_gitclone.sh`
+`./create_hosts_detail.sh`
+`./install_python_pkg.sh`
+`./run_pyinfra.sh`
+
+Go to cloudlab
+Doublecheck `host_details.txt` file
+`cloudlab_k8s_setup.sh` on each machine
+ 
+---
+
 
 ## cloudlab node set up
 1. Create a cluster in cloudlab (start experiment)

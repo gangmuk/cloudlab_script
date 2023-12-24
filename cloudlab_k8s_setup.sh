@@ -37,33 +37,20 @@ dividerEnd () {
 }
 ###########################
 
-read -p "Is this MASTER NODE? [Y/N]: " IS_MASTER
-if [ $IS_MASTER != 'Y' ] && [ $IS_MASTER != 'N' ]
+node_type=$1
+if [ $node_type != 'master' ] && [ $node_type != 'worker' ]
 then
-    echo "Invalid inputu for IS_MASTER: $IS_MASTER"
-    echo "The valid input is either Y or N"
+    echo "Invalid node type: ${node_type}"
+    echo "The valid input is either master or worker"
     exit
 fi
-
-if [ $IS_MASTER == 'Y' ]
-then
-    echo "** THIS IS MASTER NODE"
-else
-    echo "** THIS IS WORKER NODE"
-fi
+echo node_type: ${node_type}
 sleep_func
-
-echo "Assumes you have acquired a cluster of atleast 2 machines on cloudlab"
-sleep_func 5
-## gangmuk
-#read -p "Press Enter once done:"
 
 echo -e "\nThis script must be run once on EACH node you want in the cluster"
 echo -e "Recommended: \n1. Run all scripts TOGETHER on all machines so that you can collect the ip data to be added to /etc/hosts"
 echo -e "\n2. Keep 'node0' - as named by cloudlab - in the cluster. It will be made the k8smaster by this script. Else you need to manually edit the /etc/hosts file"
-sleep_func 5
-## gangmuk
-#read -p "Press Enter once done:"
+sleep_func
 
 ######################## Setup /etc/hosts settings #############################
 dividerAction
@@ -239,7 +226,8 @@ sleep_func
 #echo ""
 #read -p "If this node is the master, enter 'm'" inp
 #if [ $inp == 'm' ]
-if [ $IS_MASTER == 'Y' ]
+#if [ $IS_MASTER == 'Y' ]
+if [ $node_type == 'master' ]
 then
 	echo "THIS IS MASTER NODE (nodename: $nodename)"
 	echo "We will execute kubeadm init and apply network"
