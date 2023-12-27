@@ -15,6 +15,8 @@ Run following commands in a local machine (e.g., your macbook)
 
 `./create_hosts_detail.sh`
 
+`./setup_vimrc_and_bashrc.sh`
+
 Go to node0 cloudlab server and Run following commands
 
 `./install_python_pkg.sh`
