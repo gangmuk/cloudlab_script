@@ -23,7 +23,9 @@ Go to node0 cloudlab server and Run following commands
 
 Doublecheck `host_details.txt` file
 
-`cloudlab_k8s_setup.sh` on each machine
+`./cloudlab_k8s_setup.sh <cluster_role>` on each machine
+
+cluster_role: either `master` or `worker`
  
 ---
 
