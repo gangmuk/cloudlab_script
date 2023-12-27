@@ -24,6 +24,7 @@ packages = [
     "pkg-config",
     "libssl-dev",
     "libgflags-dev",
+    "luarocks",
 ]
 
 # Workloads to generate
@@ -44,6 +45,14 @@ apt.packages(
     update=True,
     _sudo=True
     # user=username,
+)
+
+server.script(
+    name='Install LuaSocket using LuaRocks',
+    commands=['luarocks install luasocket'],
+    sudo=True,
+    sudo_user='your_sudo_user',  # Replace with the sudo user on your servers
+    hosts=host.Data('lua_servers'),  # Apply the operation to servers in the 'lua_servers' group
 )
 
 #username = utils.get_username()
