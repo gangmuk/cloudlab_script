@@ -5,15 +5,24 @@
 
 ---
 ### TLDR
-copy cloudlab cluster manifest to `config.xml` file
-`./ssh_copy.sh`
-`./mkdir_gitclone.sh`
-`./create_hosts_detail.sh`
-`./install_python_pkg.sh`
-`./run_pyinfra.sh`
+Copy cloudlab cluster manifest to `config.xml` file in cloudlab repo in local machine
 
-Go to cloudlab
+Run following commands in a local machine (e.g., your macbook)
+
+`./ssh_copy.sh`
+
+`./mkdir_gitclone.sh`
+
+`./create_hosts_detail.sh`
+
+Go to node0 cloudlab server and Run following commands
+
+`./install_python_pkg.sh`
+
+`pyinfra inventory.py deploy.py`
+
 Doublecheck `host_details.txt` file
+
 `cloudlab_k8s_setup.sh` on each machine
  
 ---
