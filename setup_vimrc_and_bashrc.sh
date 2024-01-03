@@ -2,18 +2,17 @@
 bashrc='~/.bashrc'
 
 # Add PATH
-echo 'export PATH=$PATH:/users/gangmuk/.local/bin' >> ${bashrc}
+pssh -i -h servers.txt "echo 'export PATH=\$PATH:/users/gangmuk/.local/bin' >> ${bashrc}"
 
 # bash history
-echo 'HISTSIZE=50000' >> ${bashrc}
-echo 'HISTFILESIZE=50000' >> ${bashrc}
+pssh -i -h servers.txt "echo 'HISTSIZE=50000' >> ${bashrc}"
+pssh -i -h servers.txt "echo 'HISTFILESIZE=50000' >> ${bashrc}"
 
 # alias
 kubectl=\'kubectl\'
-echo alias k=${kubectl} >> ${bashrc}
+pssh -i -h servers.txt "echo alias k=${kubectl} >> ${bashrc}"
 
-source ~/.bashrc
-
+pssh -i -h servers.txt "source ~/.bashrc"
 
 ## Vim
 pscp -h servers.txt ~/.vimrc /users/gangmuk/
