@@ -47,14 +47,6 @@ apt.packages(
     # user=username,
 )
 
-server.script(
-    name='Install LuaSocket using LuaRocks',
-    commands=['luarocks install luasocket'],
-    sudo=True,
-    sudo_user='your_sudo_user',  # Replace with the sudo user on your servers
-    hosts=host.Data('lua_servers'),  # Apply the operation to servers in the 'lua_servers' group
-)
-
 #username = utils.get_username()
 #home_directory = f"/users/{username}"
 #print(f"home_directory: {home_directory}")
