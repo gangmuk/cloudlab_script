@@ -5,17 +5,18 @@
 
 ---
 ### TLDR
+
+
+
 Copy cloudlab cluster manifest to `config.xml` file in cloudlab repo in local machine
 
 Run following commands in a local machine (e.g., your macbook)
 
-`./ssh_copy.sh`
-
-`./mkdir_gitclone.sh`
-
-`./create_hosts_detail.sh`
-
-`./setup_vimrc_and_bashrc.sh`
+`./run_on_macbook.sh`
+    - `./ssh_copy.sh`
+    - `./mkdir_gitclone.sh`
+    - `./create_hosts_detail.sh`
+    - `./setup_vimrc_and_bashrc.sh`
 
 Go to node0 cloudlab server and Run following commands
 
@@ -23,40 +24,13 @@ Go to node0 cloudlab server and Run following commands
 
 `pyinfra inventory.py deploy.py`
 
-Doublecheck `host_details.txt` file
+**Doublecheck `host_details.txt` file**
 
 `./cloudlab_k8s_setup.sh <cluster_role>` on each machine
 
 cluster_role: either `master` or `worker`
  
 ---
-
-
-## cloudlab node set up
-1. Create a cluster in cloudlab (start experiment)
-2. [local machine] Copy cluster manifest from cloudlab gui and paste it to the **config.xml** file.
-3. [local machine] ```./ssh_copy.sh```
-   - Run inventory.py (it reads config.xml file and writes serves.txt file)
-   - Generate ssh-key on each node in the cloud lab cluster.
-   - cat all cloud lab ssh-key and write it to all_keys.txt in the [local machine].
-   - scp all_keys.txt from [local machine] to all clients (cloud lab nodes)
-   - Append all_keys.txt in the clients to its authorized_keys
-5. [local machine] ```./mkdir_gitclone.sh```
-   - Create projects directory in the clients
-   - git clone this repo(cloudlab_script) in /users/gangmuk/projects path
-7. [local machine] ```./create_hosts_detail.sh```
-   - hosts_detail.txt which will be used by cloudlab_k8s_setup.sh
-   - You have to modify this file to specify the k8s nodes.
-   - Remove nodes in hosts_detail.txt which you don't want to include in k8s cluster.
-9. [local machine] ssh node0 in cloud lab cluster.
-10. [client] ```./install_python_pkg.sh``` and ```source ~/.bashrc```
-    - install pip
-    - run pip install -r requirements.txt
-    - add path to .bashrc
-12. [client] ```pyinfra inventory.py deploy.py```
-    - This is for pyinfra basically
-    - install some basic linux packages in all client nodes.
-14. READY TO RUN ```cloudlab_k8s_setup.sh``` (It is another separate job...)
 
 ---
 ## cloudlab_k8s_setup.sh
