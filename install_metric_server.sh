@@ -22,7 +22,7 @@ kubectl patch deployment "$DEPLOYMENT_NAME" -n "$NAMESPACE" --type='json' -p='[
     {
         "op": "replace",
         "path": "/spec/template/spec/containers/0/args/4",
-        "value": "--metric-resolution=5s"
+        "value": "--metric-resolution=10s"
     }
 ]'
 
