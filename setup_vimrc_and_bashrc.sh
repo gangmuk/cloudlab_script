@@ -3,6 +3,8 @@ bashrc='~/.bashrc'
 
 # Add PATH
 pssh -i -h servers.txt "echo 'export PATH=\$PATH:/users/gangmuk/.local/bin' >> ${bashrc}"
+# SLATE/sh path
+pssh -i -h servers.txt "echo 'export PATH=\$PATH:/users/gangmuk/projects/SLATE/sh' >> ${bashrc}"
 
 # bash history
 pssh -i -h servers.txt "echo 'HISTSIZE=50000' >> ${bashrc}"
