@@ -18,13 +18,20 @@ kubectl patch deployment "$DEPLOYMENT_NAME" -n "$NAMESPACE" --type='json' -p='[
         "op": "add",
         "path": "/spec/template/spec/containers/0/args/-",
         "value": "--kubelet-insecure-tls"
-    },
-    {
-        "op": "replace",
-        "path": "/spec/template/spec/containers/0/args/4",
-        "value": "--metric-resolution=10s"
     }
 ]'
+#kubectl patch deployment "$DEPLOYMENT_NAME" -n "$NAMESPACE" --type='json' -p='[
+#    {
+#        "op": "add",
+#        "path": "/spec/template/spec/containers/0/args/-",
+#        "value": "--kubelet-insecure-tls"
+#    },
+#    {
+#        "op": "replace",
+#        "path": "/spec/template/spec/containers/0/args/4",
+#        "value": "--metric-resolution=10s"
+#    }
+#]'
 
 # Checking if the patch was successful
 if [ $? -eq 0 ]; then
