@@ -6,29 +6,16 @@
 ---
 ### TLDR
 
+1. Copy cloudlab cluster manifest to `config.xml` file in cloudlab repo in local machine
 
+2. Run following commands in a local machine (e.g., your macbook)
+    `./run_on_local_machine.sh`
 
-Copy cloudlab cluster manifest to `config.xml` file in cloudlab repo in local machine
-
-Run following commands in a local machine (e.g., your macbook)
-
-`./run_on_macbook.sh`
-    - `./ssh_copy.sh`
-    - `./mkdir_gitclone.sh`
-    - `./create_hosts_detail.sh`
-    - `./setup_vimrc_and_bashrc.sh`
-
-Go to node0 cloudlab server and Run following commands
-
-`./install_python_pkg.sh`
-
-`pyinfra inventory.py deploy.py`
-
-**Doublecheck `host_details.txt` file**
-
-`./cloudlab_k8s_setup.sh <cluster_role>` on each machine
-
-cluster_role: either `master` or `worker`
+3. Go to node0 cloudlab server and Run following commands
+    1. `run_on_cloudlab_node0.sh`
+    2. **Doublecheck `host_details.txt` file**
+    3. `./cloudlab_k8s_setup.sh <cluster_role>` on each machine
+        cluster_role: either `master` or `worker`
  
 ---
 

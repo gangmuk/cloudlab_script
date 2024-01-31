@@ -1,0 +1,8 @@
+Emulab dpkg exclusions installed in /etc/dpkg/dpkg.cfg.d/excludes .
+
+You should now run
+
+  apt-get install --reinstall \
+    linux-firmware
+
+to help minimize on-disk rootfs usage.
