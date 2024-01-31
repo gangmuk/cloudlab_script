@@ -1,7 +1,7 @@
-./ssh_copy.sh &&
+./1_ssh_copy.sh &&
 
-./mkdir_gitclone.sh &&
+./2_mkdir_gitclone.sh &&
 
-./create_hosts_detail.sh &&
+./3_create_hosts_detail.sh &&
 
-./setup_vimrc_and_bashrc.sh
+./4_setup_vimrc_and_bashrc.sh
