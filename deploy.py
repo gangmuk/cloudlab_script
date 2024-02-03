@@ -47,6 +47,77 @@ apt.packages(
     # user=username,
 )
 
+server.shell(
+    name='Change to tmp directory',
+    commands='cd ~'
+)
+
+# WRK2
+server.shell(
+	name='Install luasocket',
+	commands=[
+		'sudo luarocks install luasocket',
+		'make -C /users/gangmuk/projects/DeathStarBench/wrk2']
+)
+#server.shell(
+#	name='Install luasocket',
+#	commands='sudo luarocks install luasocket'
+#)
+#server.shell(
+#    name='make wrk2',
+#    commands='make -C /users/gangmuk/projects/DeathStarBench/wrk2'
+#)
+
+# GO
+server.shell(
+    name='Download Go',
+    commands='wget https://go.dev/dl/go1.21.6.linux-amd64.tar.gz'
+)
+server.shell(
+    name='Extract Go',
+    commands='sudo tar -C /usr/local -xzf go1.21.6.linux-amd64.tar.gz'
+)
+server.shell(
+    name='Add Go to PATH',
+    commands="echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc"
+)
+
+# TINYGO
+server.shell(
+    name='Download TinyGo',
+    commands='wget https://github.com/tinygo-org/tinygo/releases/download/v0.30.0/tinygo_0.30.0_amd64.deb'
+)
+server.shell(
+    name='Install TinyGo',
+    commands='sudo dpkg -i tinygo_0.30.0_amd64.deb'
+)
+server.shell(
+    name='Update PATH for TinyGo',
+    commands="echo 'export PATH=\\$PATH:/usr/local/bin/tinygo' >> ~/.bashrc"
+)
+
+# ZELLIJ
+zellij_url = "https://github.com/zellij-org/zellij/releases/download/v0.39.2/zellij-x86_64-unknown-linux-musl.tar.gz"
+zellij_tar = "zellij-x86_64-unknown-linux-musl.tar.gz"
+files.download(
+    name="Download Zellij",
+    src=zellij_url,
+    dest=zellij_tar
+)
+server.shell(
+    name="Extract Zellij",
+    commands=[
+        f"tar -xvf {zellij_tar}"
+    ]
+)
+server.shell(
+    name="Install Zellij",
+    commands=[
+        "chmod +x zellij",
+        "mv zellij /usr/local/bin/"
+    ]
+)
+
 #username = utils.get_username()
 #home_directory = f"/users/{username}"
 #print(f"home_directory: {home_directory}")
