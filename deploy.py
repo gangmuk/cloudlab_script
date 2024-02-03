@@ -25,6 +25,7 @@ packages = [
     "libssl-dev",
     "libgflags-dev",
     "luarocks",
+    "jq",
 ]
 
 # Workloads to generate
@@ -55,18 +56,12 @@ server.shell(
 # WRK2
 server.shell(
 	name='Install luasocket',
-	commands=[
-		'sudo luarocks install luasocket',
-		'make -C /users/gangmuk/projects/DeathStarBench/wrk2']
+	commands='sudo luarocks install luasocket'
 )
-#server.shell(
-#	name='Install luasocket',
-#	commands='sudo luarocks install luasocket'
-#)
-#server.shell(
-#    name='make wrk2',
-#    commands='make -C /users/gangmuk/projects/DeathStarBench/wrk2'
-#)
+server.shell(
+    name='make wrk2',
+    commands='make -C /users/gangmuk/projects/DeathStarBench/wrk2'
+)
 
 # GO
 server.shell(
@@ -93,7 +88,7 @@ server.shell(
 )
 server.shell(
     name='Update PATH for TinyGo',
-    commands="echo 'export PATH=\\$PATH:/usr/local/bin/tinygo' >> ~/.bashrc"
+    commands="echo 'export PATH=$PATH:/usr/local/bin/tinygo' >> ~/.bashrc"
 )
 
 # ZELLIJ
@@ -114,7 +109,7 @@ server.shell(
     name="Install Zellij",
     commands=[
         "chmod +x zellij",
-        "mv zellij /usr/local/bin/"
+        "sudo mv zellij /usr/local/bin/"
     ]
 )
 
