@@ -113,6 +113,18 @@ server.shell(
     ]
 )
 
+# GIT CONFIG
+server.shell(
+    name="Update git config",
+    commands=[
+        "git config --global core.editor 'vim'",
+        "git config --global user.name 'gangmuk@gmail.com'",
+        "git config --global user.email 'gangmuk@gmail.com'",
+        "git config --global pull.rebase true",
+    ]
+)
+
+
 #username = utils.get_username()
 #home_directory = f"/users/{username}"
 #print(f"home_directory: {home_directory}")
