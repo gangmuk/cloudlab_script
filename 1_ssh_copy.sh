@@ -22,7 +22,7 @@ if [ $inp = 'y' ]
 then
     echo "ssh-keygen"
     for line in "${lines[@]}"; do
-        ssh ${line} ssh-keygen -N ""
+        ssh ${line} ssh-keygen
     done
 fi
 
