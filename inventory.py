@@ -17,7 +17,9 @@ ssh_endpoints = [interface["hostname"] for interface in interfaces]
 for ep in ssh_endpoints:
     print(f"{ep}")
 
-rac_servers = ssh_endpoints
+#rac_servers = ssh_endpoints
+
+ssh_endpoints = list(set(ssh_endpoints))
 
 with open("servers.txt", "w") as f:
     for server in ssh_endpoints:
