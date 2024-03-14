@@ -26,6 +26,7 @@ packages = [
     "libgflags-dev",
     "luarocks",
     "jq",
+    "pssh",
 ]
 
 # Workloads to generate
