@@ -201,11 +201,18 @@ sudo sed -i 's|sandbox_image = "registry.k8s.io/pause:3.*|sandbox_image = "regis
 sudo systemctl restart containerd
 sudo systemctl enable containerd
 
-####
-# Kubernetes package is not available in the default Ubuntu 22.04 package repositories. So we need to add kubernetes repositories
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/kubernetes-xenial.gpg
-sudo apt-add-repository --yes "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+###################################################################################
+## reference: https://kubernetes.io/blog/2023/08/15/pkgs-k8s-io-introduction/
+## google hosted k8s infra code is deprecated
+## Kubernetes package is not available in the default Ubuntu 22.04 package repositories. So we need to add kubernetes repositories
+#curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/kubernetes-xenial.gpg
+#sudo apt-add-repository --yes "deb http://apt.kubernetes.io/ kubernetes-xenial main"
 ## Note: At time of writing this guide, Xenial is the latest Kubernetes repository but when repository is available for Ubuntu 22.04 (Jammy Jellyfish) then you need replace xenial word with ‘jammy’ in ‘apt-add-repository’ command.
+###################################################################################
+
+# new package location
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
 sudo apt update
 sudo apt install -y kubelet kubeadm kubectl
