@@ -32,7 +32,8 @@ for host in "${lines[@]}"; do
 done
 
 cat hosts_detail.txt
-exit
-for host in "${lines[@]}"; do
-	scp hosts_detail.txt ${host}:/users/gangmuk/projects/cloudlab_script
-done
+
+# for host in "${lines[@]}"; do
+# 	scp hosts_detail.txt ${host}:/users/gangmuk/projects/cloudlab_script
+# done
+pscp -h servers.txt hosts_detail.txt /users/gangmuk/projects/cloudlab_script
