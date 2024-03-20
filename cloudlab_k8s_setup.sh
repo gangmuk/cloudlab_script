@@ -96,13 +96,14 @@ echo -e "\nNOTE: If you want to manually change the etc/hosts different from thi
 #    dividerAction
 #fi
 
-echo "Read hosts_detail.txt file"
-if [ -f "/users/gangmuk/projects/cloudlab_script/hosts_detail.txt" ]; then
-    echo -e "\nhosts_detail.txt exists."
-    cat hosts_detail.txt
+hosts_detail_path="/users/gangmuk/projects/cloudlab_script/hosts_detail.txt"
+echo "Read ${hosts_detail_path} file"
+if [ -f "${hosts_detail_path}" ]; then
+    echo -e "\n${hosts_detail_path} exists."
+    cat ${hosts_detail_path}
     sleep_func
 else
-    echo -e "\nError: hosts_detail.txt does NOT exists."
+    echo -e "\nError: ${hosts_detail_path} does NOT exists."
     kill -INT $$   # Equivalent of CTRL+C
 fi
 
