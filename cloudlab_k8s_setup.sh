@@ -97,7 +97,7 @@ echo -e "\nNOTE: If you want to manually change the etc/hosts different from thi
 #fi
 
 echo "Read hosts_detail.txt file"
-if [ -f "hosts_detail.txt" ]; then
+if [ -f "/users/gangmuk/projects/cloudlab_script/hosts_detail.txt" ]; then
     echo -e "\nhosts_detail.txt exists."
     cat hosts_detail.txt
     sleep_func
@@ -279,9 +279,9 @@ then
         sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml ## flannel
     fi
 
-	mkdir -p $HOME/.kube
-	sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-	sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	# mkdir -p $HOME/.kube
+	# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+	# sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
     ## network apply
     sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml ## flannel
