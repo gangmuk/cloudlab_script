@@ -111,7 +111,7 @@ dividerInstruction
 
 
 ## Append to hosts_detail.txt
-cat hosts_detail.txt | sudo tee -a /etc/hosts
+cat ${hosts_detail_path} | sudo tee -a /etc/hosts
 dividerInstruction
 #Check
 cat /etc/hosts
@@ -185,22 +185,26 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 echo -e "Checking Docker:\n"
 
-sudo docker run hello-world
+# sudo docker run hello-world
 
 sudo usermod -aG docker $USER
+echo "1"
 
 ########################################
 
 
 containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
 sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+echo "1"
 ## Below is because kubeadm init gives the warning:
 ## detected that the sandbox image "registry.k8s.io/pause:3.6" of the container runtime is inconsistent with that used by kubeadm. It is recommended that using "registry.k8s.io/pause:3.9" as the CRI sandbox image.
 sudo sed -i 's|sandbox_image = "registry.k8s.io/pause:3.*|sandbox_image = "registry.k8s.io/pause:3.9"|' /etc/containerd/config.toml
+echo "1"
 
 # Restart and enable containerd service
 sudo systemctl restart containerd
 sudo systemctl enable containerd
+echo "1"
 
 ###################################################################################
 ## reference: https://kubernetes.io/blog/2023/08/15/pkgs-k8s-io-introduction/
@@ -214,10 +218,12 @@ sudo systemctl enable containerd
 # new package location
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo "1"
 
 sudo apt update
 sudo apt install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
+echo "1"
 
 ###################################################################################
 
@@ -234,6 +240,7 @@ done
 echo $nodename
 IFS=$' \t\n'
 sleep_func
+echo "1"
 
 ## gangmuk
 #echo ""
@@ -303,6 +310,7 @@ else
     #echo "Run ./get_join_command.sh in master node to print join command"
     echo -e "Note down the command from master node to join the k8s network and run"
 fi
+echo "1"
 
 echo "Script complete"
 dividerAttention
