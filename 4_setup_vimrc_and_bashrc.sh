@@ -18,4 +18,3 @@ pssh -i -h servers.txt "source ~/.bashrc"
 
 ## Vim
 pscp -h servers.txt ~/.vimrc /users/gangmuk/
-
