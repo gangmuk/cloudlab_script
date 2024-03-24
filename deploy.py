@@ -93,26 +93,26 @@ server.shell(
 )
 
 # ZELLIJ
-zellij_url = "https://github.com/zellij-org/zellij/releases/download/v0.39.2/zellij-x86_64-unknown-linux-musl.tar.gz"
-zellij_tar = "zellij-x86_64-unknown-linux-musl.tar.gz"
-files.download(
-    name="Download Zellij",
-    src=zellij_url,
-    dest=zellij_tar
-)
-server.shell(
-    name="Extract Zellij",
-    commands=[
-        f"tar -xvf {zellij_tar}"
-    ]
-)
-server.shell(
-    name="Install Zellij",
-    commands=[
-        "chmod +x zellij",
-        "sudo mv zellij /usr/local/bin/"
-    ]
-)
+#zellij_url = "https://github.com/zellij-org/zellij/releases/download/v0.39.2/zellij-x86_64-unknown-linux-musl.tar.gz"
+#zellij_tar = "zellij-x86_64-unknown-linux-musl.tar.gz"
+#files.download(
+#    name="Download Zellij",
+#    src=zellij_url,
+#    dest=zellij_tar
+#)
+#server.shell(
+#    name="Extract Zellij",
+#    commands=[
+#        f"tar -xvf {zellij_tar}"
+#    ]
+#)
+#server.shell(
+#    name="Install Zellij",
+#    commands=[
+#        "chmod +x zellij",
+#        "sudo mv zellij /usr/local/bin/"
+#    ]
+#)
 
 # GIT CONFIG
 server.shell(
