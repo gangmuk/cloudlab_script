@@ -17,28 +17,27 @@ for line in "${lines[@]}"; do
     echo "$line"
 done
 
-read -p "If you want, ssh-keygen in each cluster, Enter 'y', if yes: " inp
-if [ $inp = 'y' ]
-then
-    echo "ssh-keygen"
-    for line in "${lines[@]}"; do
-        ssh ${line} ssh-keygen
-    done
-fi
+# echo "ssh-keygen"
+# for line in "${lines[@]}"; do
+#     ssh ${line} ssh-keygen
+# done
+
+pscp -h servers.txt ssh_key_gen_script.sh /users/gangmuk &&
+pssh -i -h servers.txt "bash /users/gangmuk/ssh_key_gen_script.sh" &&
 
 echo "fetching public key into ${temp_local_file}"
 for line in "${lines[@]}"; do
-    ssh ${line} cat /users/gangmuk/.ssh/id_rsa.pub >> ${temp_local_file}
+    ssh ${line} cat /users/gangmuk/.ssh/id_rsa.pub >> ${temp_local_file}  &&
 done
 
 echo "scp ${temp_local_file}"
 for line in "${lines[@]}"; do
-    scp ${temp_local_file} ${line}:${ssh_path}
+    scp ${temp_local_file} ${line}:${ssh_path} &&
 done
 
 echo "append all_key file to authorized_keys"
 for line in "${lines[@]}"; do
-    ssh ${line} "cat ${ssh_path}/${temp_local_file} >> ${ssh_path}/${auth_key_path}"
+    ssh ${line} "cat ${ssh_path}/${temp_local_file} >> ${ssh_path}/${auth_key_path}" &&
 done
 
 rm ${temp_local_file}

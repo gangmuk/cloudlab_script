@@ -1,0 +1,1 @@
+pscp -h servers.txt gurobi.wls /users/gangmuk/projects/SLATE/global-controller
