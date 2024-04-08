@@ -1,1 +1,1 @@
-kubeadm token generate
+kubeadm token create
