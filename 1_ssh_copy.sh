@@ -27,17 +27,17 @@ pssh -i -h servers.txt "bash /users/gangmuk/ssh_key_gen_script.sh" &&
 
 echo "fetching public key into ${temp_local_file}"
 for line in "${lines[@]}"; do
-    ssh ${line} cat /users/gangmuk/.ssh/id_rsa.pub >> ${temp_local_file}  &&
+    ssh ${line} cat /users/gangmuk/.ssh/id_rsa.pub >> ${temp_local_file}
 done
 
 echo "scp ${temp_local_file}"
 for line in "${lines[@]}"; do
-    scp ${temp_local_file} ${line}:${ssh_path} &&
+    scp ${temp_local_file} ${line}:${ssh_path}
 done
 
 echo "append all_key file to authorized_keys"
 for line in "${lines[@]}"; do
-    ssh ${line} "cat ${ssh_path}/${temp_local_file} >> ${ssh_path}/${auth_key_path}" &&
+    ssh ${line} "cat ${ssh_path}/${temp_local_file} >> ${ssh_path}/${auth_key_path}"
 done
 
 rm ${temp_local_file}
