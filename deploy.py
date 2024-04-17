@@ -27,6 +27,7 @@ packages = [
     "luarocks",
     "jq",
     "pssh",
+    "graphviz",
 ]
 
 # Workloads to generate
