@@ -96,7 +96,7 @@ echo -e "\nNOTE: If you want to manually change the etc/hosts different from thi
 #    dividerAction
 #fi
 
-hosts_detail_path="/users/gangmuk/projects/cloudlab_script/hosts_detail.txt"
+hosts_detail_path="./hosts_detail.txt"
 echo "Read ${hosts_detail_path} file"
 if [ -f "${hosts_detail_path}" ]; then
     echo -e "\n${hosts_detail_path} exists."
@@ -315,3 +315,8 @@ echo "1"
 echo "Script complete"
 dividerAttention
 echo ""
+
+sudo groupadd docker
+sudo usermod -aG docker gangmuk
+newgrp docker
+
