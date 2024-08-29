@@ -5,3 +5,5 @@ all_keys.txt
 hosts_detail.txt
 pyinfra-debug.log
 *.pyc
+2.5_gitclone_private_repo.sh
+gurobi.wls
