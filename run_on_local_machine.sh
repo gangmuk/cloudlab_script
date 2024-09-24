@@ -2,10 +2,14 @@
 
 ./2_mkdir_gitclone.sh
 
-./2.5_gitclone_private_repo.sh
-
 ./3_create_hosts_detail.sh
 
 ./4_setup_vimrc_and_bashrc.sh
 
-# ./5_copy_gurob_wls.sh
+./5_add_line_to_bashrc.sh
+
+./6_copy_gurob_wls.sh
+
+echo "RECOMMEND: Consider run 2.5!"
+echo "RECOMMEND: Consider run 2.5!"
+echo "RECOMMEND: Consider run 2.5!"

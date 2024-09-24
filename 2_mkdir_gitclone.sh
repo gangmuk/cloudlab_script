@@ -19,5 +19,6 @@ pssh -i -h ${ip_file} "git clone https://github.com/gangmuk/cloudlab_script.git 
 pscp -h servers.txt config.xml ${project_dir}/cloudlab_script
 
 pssh -i -h ${ip_file} "git clone https://github.com/ServiceLayerNetworking/slate-benchmark.git ${project_dir}/slate-benchmark"
+pscp -h servers.txt config.xml ${project_dir}/slate-benchmark
 
 pssh -i -h ${ip_file} "git clone https://github.com/ServiceLayerNetworking/DeathStarBench.git ${project_dir}/DeathStarBench"
