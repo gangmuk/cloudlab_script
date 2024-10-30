@@ -6,8 +6,6 @@ auth_key_path="authorized_keys"
 temp_local_file="all_keys.txt"
 ip_file="servers.txt"
 
-python inventory.py &&
-
 echo "read servers.txt file"
 while IFS= read -r line; do
     lines+=("$line")

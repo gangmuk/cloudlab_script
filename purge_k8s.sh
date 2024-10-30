@@ -7,6 +7,8 @@ kubeadm reset
 sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube* -y --allow-change-held-packages
 sudo apt-get autoremove -y
 
+sudo ip link delete cni0
+
 # Clean up remaining Kubernetes directories
 sudo rm -rf ~/.kube
 sudo rm -rf /etc/cni

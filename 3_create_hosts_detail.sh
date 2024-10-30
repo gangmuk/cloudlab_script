@@ -1,3 +1,6 @@
+#!/bin/bash
+
+
 ip_file=servers.txt
 
 while IFS= read -r line; do

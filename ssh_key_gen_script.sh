@@ -1,3 +1,13 @@
+#!/bin/bash
+
+echo "CHECK servers.txt file"
+echo "TO GET MOST RECENT SERVERS, RUN 'python inventory.py'"
+echo "It will start in 3 seconds"
+for i in {3..1}; do
+    echo $i
+    sleep 1
+done
+
 KEY_PATH="/users/gangmuk/.ssh/id_rsa"
 
 # Check if the SSH key already exists
