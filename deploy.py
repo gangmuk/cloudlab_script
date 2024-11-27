@@ -28,6 +28,11 @@ packages = [
     "jq",
     "pssh",
     "graphviz",
+    "stress",
+    "linux-tools-common",
+    "linux-tools-5.15.0-122-generic",
+    "linux-cloud-tools-5.15.0-122-generic",
+    "golang-easyjson",
 ]
 
 # Workloads to generate
