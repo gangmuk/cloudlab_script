@@ -96,7 +96,7 @@ echo -e "\nNOTE: If you want to manually change the etc/hosts different from thi
 #    dividerAction
 #fi
 
-hosts_detail_path="./hosts_detail.txt"
+hosts_detail_path="/users/gangmuk/projects/cloudlab_script/hosts_detail.txt"
 echo "Read ${hosts_detail_path} file"
 if [ -f "${hosts_detail_path}" ]; then
     echo -e "\n${hosts_detail_path} exists."
@@ -255,7 +255,7 @@ then
     ### Install helm
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     chmod 700 get_helm.sh
-    ./get_helm.sh
+    sh /users/gangmuk/projects/cloudlab_script/get_helm.sh
     ################
     echo ""
     network_type='f'
