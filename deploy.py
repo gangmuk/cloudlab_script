@@ -30,8 +30,10 @@ packages = [
     "graphviz",
     "stress",
     "linux-tools-common",
-    "linux-tools-5.15.0-122-generic",
-    "linux-cloud-tools-5.15.0-122-generic",
+    # "linux-tools-5.15.0-122-generic",
+    # "linux-cloud-tools-5.15.0-122-generic",
+    "linux-tools-6.8.0-53-generic",
+    "linux-cloud-tools-6.8.0-53-generic",
     "golang-easyjson",
 ]
 
