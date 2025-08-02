@@ -15,8 +15,6 @@
     1. `install_basic_pkg_in_node0.sh`
     2. `source ~/.bashrc`
     3. `pyinfra inventory.py deploy.py`
-    4. **Doublecheck `host_details.txt` file**
-    5. `./cloudlab_k8s_setup.sh <cluster_role>` on each machine
         - Note: cluster_role: either `master` or `worker`
  
 ---

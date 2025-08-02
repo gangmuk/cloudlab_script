@@ -12,3 +12,5 @@ pscp -h servers.txt config.xml ${project_dir}/slate-benchmark
 pssh -i -h ${ip_file} "git clone https://github.com/ServiceLayerNetworking/DeathStarBench.git ${project_dir}/DeathStarBench"
 
 pssh -i -h ${ip_file} "git clone https://github.com/gangmuk/client.git ${project_dir}/client"
+
+pssh -i -h ${ip_file} "git clone https://github.com/ServiceLayerNetworking/SLATE.git ${project_dir}/SLATE"

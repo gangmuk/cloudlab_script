@@ -12,4 +12,4 @@
 
 ./6_copy_gurob_wls.sh
 
-python get_node_name_from_config_xml.py
+# python install_k8s_in_cloudlab_remotely_from_mac.py
