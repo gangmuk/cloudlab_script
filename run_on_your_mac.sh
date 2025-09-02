@@ -10,6 +10,6 @@
 
 ./5_add_line_to_bashrc.sh
 
-./6_copy_gurob_wls.sh
+# ./6_copy_gurob_wls.sh
 
 # python install_k8s_in_cloudlab_remotely_from_mac.py
