@@ -15,6 +15,8 @@ pscp -h servers.txt config.xml ${project_dir}/cloudlab_script
 
 # pssh -i -h ${ip_file} "git clone https://github.com/ServiceLayerNetworking/SLATE.git ${project_dir}/SLATE"
 
+pssh -i -h ${ip_file} "git clone https://github.com/gangmuk/LLM_placement_solver.git ${project_dir}/LLM_placement_solver"
+
 pssh -i -h ${ip_file} "git clone https://github.com/gangmuk/aibrix-gangmuk.git ${project_dir}/aibrix-gangmuk"
 
 pssh -i -h ${ip_file} "git clone https://github.com/gangmuk/all-the-scripts.git ${project_dir}/all-the-scripts"
