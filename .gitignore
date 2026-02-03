@@ -1,3 +1,5 @@
+.DS_Store
+add_ssh_key_to_servers.sh
 config.xml
 servers.txt
 all_keys.txt

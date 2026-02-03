@@ -63,7 +63,7 @@ dividerAction
 echo "In cloudlab, nodes reserved as a cluster are named node0, node1, node2 etc. By default we will define 'node0' as the control-plane node or 'k8smaster'. All other node<i> will be named k8sworker<i> in /etc/hosts"
 echo -e "\nNOTE: If you want to manually change the etc/hosts different from this convention, skip next step"
 
-hosts_detail_path="/users/gangmuk/projects/cloudlab_script/hosts_detail.txt"
+hosts_detail_path="hosts_detail.txt"
 echo "Read ${hosts_detail_path} file"
 if [ -f "${hosts_detail_path}" ]; then
     echo -e "\n${hosts_detail_path} exists."
@@ -148,6 +148,25 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 echo -e "Checking Docker:\n"
 
+# Configure Docker to use /mnt/docker as data directory
+echo "Configuring Docker to use /mnt/docker as data directory"
+sudo mkdir -p /mnt/docker
+sudo mkdir -p /etc/docker
+
+# Stop Docker service if running
+sudo systemctl stop docker 2>/dev/null || true
+
+# Create daemon.json with custom data-root
+sudo tee /etc/docker/daemon.json > /dev/null <<EOF
+{
+  "data-root": "/mnt/docker"
+}
+EOF
+
+# Start Docker service
+sudo systemctl start docker
+sudo systemctl enable docker
+
 sudo usermod -aG docker $USER
 echo "1"
 
@@ -199,7 +218,7 @@ then
     ### Install helm
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     chmod 700 get_helm.sh
-    yes | sh /users/gangmuk/projects/cloudlab_script/get_helm.sh
+    yes | sh get_helm.sh
     ################
     echo ""
     network_type='f'

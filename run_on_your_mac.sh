@@ -1,3 +1,5 @@
+./0_init_server_list.sh
+
 ./1_ssh_copy.sh
 
 ./2_mkdir_gitclone.sh

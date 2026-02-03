@@ -1,6 +1,7 @@
 greenlet
 gevent
 pyinfra==2.8
+backports.tarfile
 beautifulsoup4==4.12.2
 lxml==4.9.3
 python-dotenv==1.0.0
