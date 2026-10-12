@@ -26,6 +26,7 @@ pscp -h servers.txt ssh_key_gen_script.sh /users/gangmuk &&
 pssh -i -h servers.txt "bash /users/gangmuk/ssh_key_gen_script.sh" &&
 
 echo "fetching public key into ${temp_local_file}"
+rm -f ${temp_local_file}
 for line in "${lines[@]}"; do
     ssh ${line} cat /users/gangmuk/.ssh/id_rsa.pub >> ${temp_local_file}
 done

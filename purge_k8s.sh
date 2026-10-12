@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Reset Kubernetes cluster
-kubeadm reset
+sudo kubeadm reset -f
 
 # Purge all Kubernetes-related packages
-sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube* -y --allow-change-held-packages
+sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni 'kube*' -y --allow-change-held-packages
 sudo apt-get autoremove -y
 
 sudo ip link delete cni0

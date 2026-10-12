@@ -1,11 +1,7 @@
-# src_file=$1
-# if [ -z $src_file ]; then
-#     echo "Usage: $0 <file>"
-#     exit 1
-# fi
+#!/bin/bash
 
 src_file=$1
-if [ -z $src_file ]; then
+if [ -z "$src_file" ]; then
     echo "Usage: $0 <file>"
     exit 1
 fi

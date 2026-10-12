@@ -137,7 +137,7 @@ export LS_COLORS="${LS_COLORS}:*.pdf=38;5;208"
 export LS_COLORS="${LS_COLORS}:*.png=38;5;204"
 
 
-source /mnt/venv/bin/activate
+[ -f /mnt/venv/bin/activate ] && source /mnt/venv/bin/activate
 export PATH=$PATH:/usr/local/go/bin
 if command -v go &> /dev/null; then
     export PATH=$PATH:$(go env GOPATH)/bin

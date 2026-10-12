@@ -10,3 +10,5 @@ pyinfra-debug.log
 2.5_gitclone_private_repo.sh
 add_git_pat_to_bashrc.sh
 gurobi.wls
+master.txt
+workers.txt

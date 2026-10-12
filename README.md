@@ -8,22 +8,18 @@
 
 1. Copy cloudlab cluster manifest to `config.xml` file in cloudlab repo in local machine
 
-2. Run following commands in a local machine (e.g., your macbook)
-    `./run_on_local_machine.sh`
+2. Commit and push this repo (the nodes get the scripts through `git clone`)
 
-3. Go to node0 cloudlab server and Run following commands
-    1. `install_basic_pkg_in_node0.sh`
-    2. `source ~/.bashrc`
-    3. `pyinfra inventory.py deploy.py`
-        - Note: cluster_role: either `master` or `worker`
- 
+3. Run on your local machine (e.g., your macbook)
+    - `./run_on_your_mac.sh` : ssh keys, git clone, bashrc/vimrc, basic packages in node0, pyinfra deploy to all nodes
+    - `./run_on_your_mac.sh --k8s` : all of the above + kubernetes (node0 = master, other nodes = workers, workers joined automatically)
+
 ---
 
 ---
 ## cloudlab_k8s_setup.sh
-1. [client] ```./cloudlab_k8s_setup.sh```
-   - Is this MASTER NODE? [Y/N]:
-2. If it is worker node, you are supposed to run ```sudo kubeadm join ...``` command to join the cluster. You can get the full command by running ```./get_join_command.sh in **master** node.
+1. [client] ```./cloudlab_k8s_setup.sh master``` on node0, ```./cloudlab_k8s_setup.sh worker``` on the other nodes (run from the cloudlab_script dir so it finds hosts_detail.txt)
+2. On each worker node, run the ```sudo kubeadm join ...``` command printed by the master. You can print a fresh one any time with ```./check_join_key.sh``` in the **master** node.
 
 ---
 ## istio multi-primary cluster on different network

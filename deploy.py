@@ -1,10 +1,9 @@
 from pyinfra.operations import apt, files, server, python, git, ssh
 from pyinfra import host, config
-from pyinfra.facts.server import LinuxDistribution, LinuxName, OsVersion, Users
+from pyinfra.facts.server import KernelVersion, LinuxDistribution, LinuxName, OsVersion, Users
 import os
 from pathlib import Path
 import subprocess
-import utils
 
 
 # Path to ssh key for repos
@@ -30,10 +29,7 @@ packages = [
     "graphviz",
     "stress",
     "linux-tools-common",
-    # "linux-tools-5.15.0-122-generic",
-    # "linux-cloud-tools-5.15.0-122-generic",
-    "linux-tools-6.8.0-53-generic",
-    "linux-cloud-tools-6.8.0-53-generic",
+    # linux-tools/linux-cloud-tools for the running kernel are appended below
     "golang-easyjson",
 ]
 
@@ -44,8 +40,11 @@ packages = [
 distribution_name = host.get_fact(LinuxDistribution)["name"]
 if distribution_name != "Ubuntu":
     raise Exception(
-        "This deploy script only works on Ubuntu unlike {}", distribution_name
+        "This deploy script only works on Ubuntu unlike {}".format(distribution_name)
     )
+
+kernel_version = host.get_fact(KernelVersion)
+packages += [f"linux-tools-{kernel_version}", f"linux-cloud-tools-{kernel_version}"]
 
 # Install packages
 apt.packages(
@@ -57,47 +56,36 @@ apt.packages(
     # user=username,
 )
 
-server.shell(
-    name='Change to tmp directory',
-    commands='cd ~'
-)
-
-# WRK2
-server.shell(
-	name='Install luasocket',
-	commands='sudo luarocks install luasocket'
-)
-server.shell(
-    name='make wrk2',
-    commands='make -C /users/gangmuk/projects/DeathStarBench/wrk2'
-)
+# WRK2 (needs DeathStarBench, which 2_mkdir_gitclone.sh no longer clones)
+#server.shell(
+#	name='Install luasocket',
+#	commands='sudo luarocks install luasocket'
+#)
+#server.shell(
+#    name='make wrk2',
+#    commands='make -C /users/gangmuk/projects/DeathStarBench/wrk2'
+#)
 
 # GO
+# PATH for /usr/local/go/bin is set in bashrc_for_server
 server.shell(
     name='Download Go',
-    commands='wget https://go.dev/dl/go1.21.6.linux-amd64.tar.gz'
+    commands='wget -q -O /tmp/go1.21.6.linux-amd64.tar.gz https://go.dev/dl/go1.21.6.linux-amd64.tar.gz'
 )
 server.shell(
     name='Extract Go',
-    commands='sudo tar -C /usr/local -xzf go1.21.6.linux-amd64.tar.gz'
-)
-server.shell(
-    name='Add Go to PATH',
-    commands="echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc"
+    commands='sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/go1.21.6.linux-amd64.tar.gz'
 )
 
 # TINYGO
+# The deb installs the tinygo binary into /usr/local/bin, which is already on PATH
 server.shell(
     name='Download TinyGo',
-    commands='wget https://github.com/tinygo-org/tinygo/releases/download/v0.30.0/tinygo_0.30.0_amd64.deb'
+    commands='wget -q -O /tmp/tinygo_0.30.0_amd64.deb https://github.com/tinygo-org/tinygo/releases/download/v0.30.0/tinygo_0.30.0_amd64.deb'
 )
 server.shell(
     name='Install TinyGo',
-    commands='sudo dpkg -i tinygo_0.30.0_amd64.deb'
-)
-server.shell(
-    name='Update PATH for TinyGo',
-    commands="echo 'export PATH=$PATH:/usr/local/bin/tinygo' >> ~/.bashrc"
+    commands='sudo dpkg -i /tmp/tinygo_0.30.0_amd64.deb'
 )
 
 # ZELLIJ

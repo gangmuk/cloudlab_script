@@ -11,7 +11,7 @@
 export DEBIAN_FRONTEND=noninteractive
 
 sleep_func () {
-    echo "Next command will be executed in 5 seconds"
+    echo "Next command will be executed in 2 seconds"
     for i in {2..1}
     do
         echo "$i"
@@ -44,7 +44,7 @@ dividerEnd () {
 node_type=$1
 master=master
 worker=worker
-if [ $node_type != $master ] && [ $node_type != $worker ]
+if [ "$node_type" != "$master" ] && [ "$node_type" != "$worker" ]
 then
     echo "Invalid node type: ${node_type}"
     echo "The valid input is either master or worker"
@@ -76,8 +76,10 @@ fi
 
 dividerInstruction
 
-## Append to hosts_detail.txt
-cat ${hosts_detail_path} | sudo tee -a /etc/hosts
+## Append hosts_detail.txt to /etc/hosts (skip lines that are already there)
+while IFS= read -r line; do
+    grep -qxF "$line" /etc/hosts || echo "$line" | sudo tee -a /etc/hosts
+done < ${hosts_detail_path}
 dividerInstruction
 #Check
 cat /etc/hosts
@@ -92,7 +94,6 @@ sudo swapoff -a
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 ## Kernel modules
-echo "gangmuk"
 sudo tee /etc/modules-load.d/containerd.conf <<EOF
 overlay
 br_netfilter
@@ -117,12 +118,6 @@ sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables ne
 ## Install Containerd runtime
 sudo apt-get install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
 
-## Enable docker repository
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/docker.gpg
-sudo add-apt-repository --yes "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
-sudo apt-get update -y
-
 ##########################################
 echo "Installing Docker and containerd:"
 echo "" 
@@ -135,7 +130,7 @@ sudo apt-get install -y \
     lsb-release
 
 sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSLk https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
 echo \
@@ -244,20 +239,12 @@ then
     then
         kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml ## calico
     else
-        sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml ## flannel
+        kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml ## flannel
     fi
 
-    ## network apply
-    sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml ## flannel
-
-    token=$(kubeadm token list | sed -n '2p' | awk '{print $1}')
-    cert_hash=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt \
-        | openssl rsa -pubin -outform der 2>/dev/null \
-        | openssl dgst -sha256 -hex \
-        | sed 's/^.* //')
     dividerAttention
     echo "** COPY AND RUN THE FOLLOWING COMMAND LINE IN WORKER NODE**"
-    echo "sudo kubeadm join ${HOSTNAME}:6443 --token ${token} --discovery-token-ca-cert-hash sha256:${cert_hash}"
+    echo "sudo $(sudo kubeadm token create --print-join-command)"
     dividerAttention
 else
     echo "THIS IS WORKER NODE (nodename: $nodename)"
@@ -269,8 +256,3 @@ echo "1"
 echo "Script complete"
 dividerAttention
 echo ""
-
-# Ensure docker group membership without changing the current session
-sudo groupadd docker 2>/dev/null || true
-sudo usermod -aG docker gangmuk
-echo "Docker group membership configured"
