@@ -211,9 +211,8 @@ then
     echo "We will execute kubeadm init and apply network"
     sleep_func
     ### Install helm
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    chmod 700 get_helm.sh
-    yes | sh get_helm.sh
+    curl -fsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    bash /tmp/get_helm.sh    # needs bash, not sh (dash)
     ################
     echo ""
     network_type='f'
