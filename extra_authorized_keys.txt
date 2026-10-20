@@ -1,0 +1,6 @@
+# Public keys added to ~/.ssh/authorized_keys on every node by the keys step (1_ssh_copy.sh).
+# One key per line. Lines starting with # are ignored.
+# Delta login node
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCrXTIXO7Jp3oJ9D6g/FfupMe7pzmB/zUn/chGmKWwKzwn1DaEQZCfONqvtk3ewJru2tp4ti89dlVx/SiZRUMn5e0rz3odSl8xP0Mv3WRsuui1wWdupSHPXGtSyqlAWLPcRNGjHn6I3L52StX/igW6pVL05A1doTkhFETiSd/Athf50NxfogKTbeAiPXGgGVW8zfVfRKrCyKnptix94bbfSv0pwpmLZfpahZClwnh+cjHn3xfaiD1Z7zCU5naR2trYO/zX2r6xyz9oJsnpLITK1KQv65Z8CdzU781bKtSHqEgXyQT8wqAYmwUZkmCHSKlJl/UIVdIFBsErvhz3l41VA8ft9L7S/etZ6o4M0lMHYWOEWkBk3q/j3zb/sZJ3wRHlGW/AE0SWwhEJg80uzbcWb7LEGfiuXr8Y9U+JYbOYsX5B5zm60VU1rKjF5H6EKbrnAJWQGXTjfW+EAoQbjDjrLN8S5i0FRcd8ebPEMRH4S0YBkux0GK7OPwm5STsYandk= gangmuk2@dt-login04.delta.ncsa.illinois.edu
+# Delta AI login node
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFOpPYC+7cOK2CwHH8wEJLLxg8W/NwM3EoCj0p5Ek/D5 gangmuk2@dtai-login.delta.ncsa.illinois.edu

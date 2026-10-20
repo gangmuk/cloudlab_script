@@ -19,7 +19,9 @@ fix things when they break.
    - **Never touch the root filesystem or the disk it lives on.**
    - Never weaken the checks in `mount_extra_disk.sh` to force a disk, and never pass a disk
      name by hand.
-   - If no node has a usable disk, say so and continue with `--no-disk`.
+   - The choice is per node. On a node with no usable disk, `mount_extra_disk.sh` leaves `/mnt`
+     on the root disk and the run goes on. Don't switch the whole run to `--no-disk` because some
+     nodes have no spare disk; just report which nodes have none.
 3. **Don't use `/proj`.** Repos go to `/mnt/projects` on each node (linked from `~/projects`).
 4. **Never print secrets.** `CR_PAT` is a GitHub token. Don't echo it, and don't show
    `.git/config` of private clones.
@@ -31,6 +33,8 @@ fix things when they break.
 ## Inputs
 
 - **`config.xml`** (required): the CloudLab manifest, pasted by the user. It is gitignored.
+  If the user gives only hostnames, get it from node0: `ssh <user>@<node0 host> geni-get manifest > config.xml`.
+  Before replacing a `config.xml` for another cluster, keep it as `config_<experiment>.xml` (also gitignored).
   `python inventory.py` reads it and writes:
   - `servers.txt`: every node, as `user@host`
   - `master.txt`: node0, the Kubernetes master
@@ -100,7 +104,7 @@ Run `./run_on_your_mac.sh --help` for the step names. The default order is:
 
 | step | what it does | where | check that it worked |
 |---|---|---|---|
-| `keys` | `1_ssh_copy.sh`: new ssh key on each node, all keys added to every node's `authorized_keys` | all | `pssh -i -h servers.txt "ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new $(head -1 master.txt) hostname"` |
+| `keys` | `1_ssh_copy.sh`: new ssh key on each node; those keys plus `extra_authorized_keys.txt` (the user's Delta and Delta AI login nodes) added to every node's `authorized_keys`, skipping keys already there | all | `pssh -i -h servers.txt "ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new $(head -1 master.txt) hostname"` |
 | `disk` | `mount_extra_disk.sh` formats and mounts the chosen disk at `/mnt` (adds an fstab entry with `nofail`), then links `~/projects` to `/mnt/projects`. With `--no-disk`, `/mnt` stays on the root disk | all | `pssh -i -h servers.txt "findmnt /mnt; ls -ld ~/projects"` |
 | `sync` | `2_mkdir_gitclone.sh`: rsyncs this repo (including `config.xml`) to `~/projects/cloudlab_script`, and git clones or pulls the other repos. Then `2.5_gitclone_private_repo.sh` if present | all | `pssh -i -h servers.txt "ls ~/projects"` |
 | `hosts` | `3_create_hosts_detail.sh`: writes `hosts_detail.txt` (public IP, FQDN, master/worker name) and copies it to the nodes | Mac + all | `cat hosts_detail.txt`; the IPs should match the `<host ipv4=...>` entries in `config.xml` |
@@ -154,6 +158,23 @@ turns `--k8s` on.
   pods won't schedule until you run
   `kubectl taint nodes --all node-role.kubernetes.io/control-plane-`.
 
+- **A node was set up with `/mnt` on the root disk** (`--no-disk`, or a run that skipped the
+  disk) and the user now wants the spare disk.
+  - Fix: `sudo bash /tmp/mount_extra_disk.sh --migrate` on that node (dry run first, and the user's
+    OK as usual). It copies `/mnt` onto the new disk, stops kubelet, docker and containerd for
+    the final copy, mounts the disk at `/mnt` and starts them again. Paths don't change. The old
+    copy stays in `/mnt.old`; delete it only when the user agrees. Do one worker first, the master last.
+
+- **`verify_k8s.sh` fails on the first worker right after install or a restart**
+  (`;; connection timed out; no servers could be reached`).
+  - Cause: nodes report Ready before Flannel and CoreDNS are up.
+  - Fix: `verify_k8s.sh` now waits for both and retries each node 3 times.
+- **The node already has a real `~/projects` folder** (set up before this repo used `/mnt`).
+  - The `disk` step moves it to `/mnt/projects` and links it, if `/mnt` is the extra disk and
+    `/mnt/projects` is empty. Other folders the user keeps in `~` (e.g. `~/rm`) are not moved
+    unless the user asks: then `mv ~/X /mnt/X && ln -s /mnt/X ~/X`, after checking with
+    `sudo lsof +D ~/X` that nothing has files open there.
+
 ## Limitations (known, not bugs)
 
 - Kubernetes uses the public 130.127.x.x network (the first `inet` from `ifconfig` in
@@ -171,6 +192,7 @@ On the Mac:
 - `run_on_your_mac.sh`: entry point
 - `inventory.py`: also used by pyinfra on node0
 - `1_ssh_copy.sh`
+- `extra_authorized_keys.txt`: public keys of other machines that must reach the nodes (Delta, Delta AI). To add a machine, append its public key here, one line per key
 - `2_mkdir_gitclone.sh`
 - `2.5_gitclone_private_repo.sh`: gitignored, may be missing
 - `3_create_hosts_detail.sh`

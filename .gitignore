@@ -12,3 +12,4 @@ add_git_pat_to_bashrc.sh
 gurobi.wls
 master.txt
 workers.txt
+config_*.xml

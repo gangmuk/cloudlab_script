@@ -102,9 +102,15 @@ if want disk; then
         run_step "disk: skipped, using /mnt on the root disk" pssh -i -h servers.txt \
             "sudo mkdir -p /mnt/projects && sudo chown \$USER /mnt /mnt/projects"
     fi
-    # ~/projects points to /mnt/projects so /users/gangmuk/projects paths keep working
-    run_step "disk: link ~/projects to /mnt/projects" pssh -i -h servers.txt \
-        "if [ ! -e ~/projects ]; then ln -s /mnt/projects ~/projects; elif [ ! -L ~/projects ]; then echo 'WARNING: ~/projects already exists, leaving it on the root disk'; fi"
+    # ~/projects points to /mnt/projects so /users/gangmuk/projects paths keep working.
+    # An existing ~/projects folder is moved to the extra disk (only if /mnt is one and /mnt/projects is empty).
+    run_step "disk: link ~/projects to /mnt/projects" pssh -t 0 -i -h servers.txt \
+        "if [ ! -e ~/projects ]; then ln -s /mnt/projects ~/projects; \
+         elif [ ! -L ~/projects ]; then \
+           if mountpoint -q /mnt && [ -z \"\$(ls -A /mnt/projects)\" ]; then \
+             rmdir /mnt/projects && mv ~/projects /mnt/projects && ln -s /mnt/projects ~/projects && echo 'moved ~/projects to /mnt/projects'; \
+           else echo 'WARNING: ~/projects already exists, leaving it on the root disk'; fi; \
+         fi"
 fi
 
 if want sync; then
