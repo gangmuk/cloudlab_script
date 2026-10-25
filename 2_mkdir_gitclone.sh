@@ -32,6 +32,8 @@ clone_or_pull () {
 }
 
 sync_this_repo || exit 1
+# --repo-only: just copy this repo (used when resuming a run after the sync step)
+[ "$1" == "--repo-only" ] && exit 0
 
 # clone_or_pull https://github.com/ServiceLayerNetworking/slate-benchmark.git slate-benchmark
 # pscp -h ${ip_file} config.xml ${project_dir}/slate-benchmark

@@ -172,6 +172,10 @@ sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/c
 # Kubernetes images live in containerd's root, so keep it on the /mnt disk too
 sudo mkdir -p /mnt/containerd
 sudo sed -i "s|^root = .*|root = '/mnt/containerd'|" /etc/containerd/config.toml
+# Keep using the registry mirror if registry_mirror.sh set one up
+if [ -d /etc/containerd/certs.d ]; then
+    sudo sed -i "s|config_path = ''|config_path = '/etc/containerd/certs.d'|" /etc/containerd/config.toml
+fi
 echo "1"
 sudo sed -i 's|sandbox_image = "registry.k8s.io/pause:3.*|sandbox_image = "registry.k8s.io/pause:3.9"|' /etc/containerd/config.toml
 echo "1"
@@ -224,11 +228,11 @@ then
     then
         ## Calico
         echo -e "RUN and wait: \n  sudo kubeadm init --control-plane-endpoint=$HOSTNAME"
-        sudo kubeadm init --control-plane-endpoint=$HOSTNAME
+        sudo kubeadm init --control-plane-endpoint=$HOSTNAME || { echo "kubeadm init failed"; exit 1; }
     else
         ## Flannel
         echo -e "RUN and wait: \n  sudo kubeadm init --control-plane-endpoint=$HOSTNAME --pod-network-cidr=10.244.0.0/16 "
-        sudo kubeadm init --control-plane-endpoint=$HOSTNAME --pod-network-cidr=10.244.0.0/16
+        sudo kubeadm init --control-plane-endpoint=$HOSTNAME --pod-network-cidr=10.244.0.0/16 || { echo "kubeadm init failed"; exit 1; }
     fi
 
     echo "setup .kube/config"

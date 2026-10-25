@@ -118,6 +118,13 @@ if want sync; then
     if [ -x ./2.5_gitclone_private_repo.sh ]; then
         run_step "sync: clone private repos" ./2.5_gitclone_private_repo.sh
     fi
+else
+    # Resuming at a later step: the nodes run their own copy of this repo, so still copy local edits there
+    resume_step=${only_step:-${from_step}}
+    case " ${STEPS#*sync} " in
+        *" ${resume_step} "*)
+            run_step "sync: copy this repo only (resuming at ${resume_step})" ./2_mkdir_gitclone.sh --repo-only ;;
+    esac
 fi
 
 if want hosts; then
